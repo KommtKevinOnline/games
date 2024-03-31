@@ -1,7 +1,7 @@
 <template>
   <UContainer>
     <h1 class="text-4xl font-bold my-8 text-primary">Papaplatte Games</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-8">
       <a v-for="game in data?.body" :href="game.url" target="_blank">
         <UCard :ui="{ body: { padding: '' } }">
           <img
