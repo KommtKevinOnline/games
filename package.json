@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconify-json/mdi": "^1.1.64",
     "@iconify-json/simple-icons": "^1.1.97",
     "@nuxt/content": "^2.12.1",
     "@nuxt/ui": "^2.15.0",

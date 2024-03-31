@@ -7,6 +7,6 @@ export default defineNuxtConfig({
     preference: 'dark',
   },
   ui: {
-    icons: ['simple-icons'],
+    icons: ['mdi', 'simple-icons'],
   },
 });

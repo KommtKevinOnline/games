@@ -1,6 +1,15 @@
 <template>
   <UContainer>
-    <h1 class="text-4xl font-bold my-8 text-primary">Papaplatte Games</h1>
+    <h1 class="text-4xl font-bold mt-8 text-primary">Papaplatte Games</h1>
+    <div class="my-8 flex items-start">
+      <UButton to="/randomizer" icon="i-mdi-dice">Randomizer</UButton>
+      <UBadge
+        color="red"
+        class="-translate-x-2 -translate-y-2"
+        :ui="{ rounded: 'rounded-full' }"
+        >Neu</UBadge
+      >
+    </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-8">
       <a v-for="game in data?.body" :href="game.url" target="_blank">
         <UCard :ui="{ body: { padding: '' } }">
@@ -24,5 +33,3 @@ const { data } = await useAsyncData('games', () =>
   queryContent('/games').findOne()
 );
 </script>
-
-<style></style>
