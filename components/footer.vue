@@ -11,8 +11,32 @@
       </p>
     </template>
 
-    <template #right>
+    <template #center>
       <UColorModeButton size="sm" />
+    </template>
+
+    <template #right>
+      <UButton
+        icon="i-simple-icons-x"
+        color="gray"
+        variant="ghost"
+        to="https://x.com/niki2k1"
+        target="_blank"
+      />
+      <UButton
+        icon="i-simple-icons-instagram"
+        color="gray"
+        variant="ghost"
+        to="https://instagram.com/niki2k1"
+        target="_blank"
+      />
+      <UButton
+        icon="i-simple-icons-github"
+        color="gray"
+        variant="ghost"
+        to="https://github.com/Niki2k1"
+        target="_blank"
+      />
     </template>
   </UFooter>
 </template>
@@ -37,10 +61,6 @@ const links = [
       {
         label: 'Impressum',
         to: 'https://kommtkevinonline.de/impressum',
-      },
-      {
-        label: 'Kontakt',
-        to: 'mailto:info@niki2k1.dev',
       },
     ],
   },
