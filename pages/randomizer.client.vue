@@ -6,34 +6,20 @@
     </div>
     <div class="flex flex-col gap-8 justify-center items-center">
       <div
-        class="w-[60vw] overflow-x-hidden border rounded-lg p-8 frosted-glass"
+        ref="divider"
+        class="w-1 bg-orange-500 absolute h-56 lg:h-[20rem] -translate-y-9 z-10"
+      />
+      <div
+        class="w-[95vw] lg:w-[60vw] h-60 lg:h-[22rem] overflow-hidden border rounded-lg p-8 frosted-glass"
       >
         <div
-          class="flex gap-8 transition-transform ease-in-out"
-          :style="`transform: translateX(${offset}px); transition-duration: ${duration}ms;`"
-          ref="container"
+          class="flex gap-8 transition-transform"
+          :style="`transform: translateX(${offset}px); transition-duration: ${duration}ms; transition-timing-function: cubic-bezier(.08,.6,0,1)`"
+          ref="gamesContainer"
         >
-          <UCard
-            v-for="game in games"
-            :ui="{ body: { padding: '' } }"
-            class="min-w-96"
-          >
-            <img
-              :src="game.image"
-              :alt="`Banner of the game '${game.name}'`"
-              class="rounded-t-lg"
-            />
-
-            <template #footer>
-              <h1 class="text-2xl font-bold">{{ game.name }}</h1>
-            </template>
-          </UCard>
+          <GameCard v-for="game in games" :game="game" />
         </div>
       </div>
-      <div
-        class="w-1 bg-orange-500 h-[320px] absolute"
-        style="transform: translateY(-36px)"
-      />
       <UButton @click="roll" size="lg" icon="i-mdi-dice">Roll</UButton>
     </div>
   </UContainer>
@@ -41,9 +27,10 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
+import type { Game } from '../types/game';
 
 const { data } = await useAsyncData('games', () =>
-  queryContent('/games').findOne()
+  queryContent<Game>('/games').findOne()
 );
 
 const winner = ref('');
@@ -73,8 +60,9 @@ function randomizeGames() {
   games.value = randomized.sort(() => Math.random() - 0.5);
 }
 
-const container = ref<HTMLElement | null>(null);
-const duration = ref(3000);
+const gamesContainer = ref<HTMLElement | null>(null);
+const divider = ref<HTMLElement | null>(null);
+const duration = ref(8000);
 const offset = ref(0);
 
 onMounted(() => {
@@ -88,10 +76,13 @@ async function roll() {
   randomizeGames();
   await new Promise((resolve) => setTimeout(resolve, 100));
 
-  duration.value = 3000;
-  const width = 384;
+  duration.value = 8000;
+  const gap = 32;
+  const width = gamesContainer.value?.firstElementChild?.clientWidth ?? 0;
 
-  offset.value = -((width + 32) * games.value.length - width * 3);
+  offset.value =
+    -((width + gap) * (games.value.length - 3)) +
+    Math.floor(Math.random() * (width - 0 + 1) + 0);
 
   await new Promise((resolve) => setTimeout(resolve, duration.value));
 
