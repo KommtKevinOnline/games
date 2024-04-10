@@ -160,5 +160,11 @@
     "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/2232600/header.jpg",
     "description": "",
     "url": "https://store.steampowered.com/app/2232600/Anomaly_Exit/"
+  },
+  {
+    "name": "Besiege: The Splintered Sea",
+    "image": "https://cdn.akamai.steamstatic.com/steam/apps/2165710/header.jpg",
+    "description": "",
+    "url": "https://store.steampowered.com/app/2165710/Besiege_The_Splintered_Sea"
   }
 ]
