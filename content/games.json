@@ -172,5 +172,11 @@
     "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/2540100/header.jpg",
     "description": "",
     "url": "https://store.steampowered.com/app/2540100/Crime_Scene_Cleaner_Prologue/"
+  },
+  {
+    "name": "Car Repair",
+    "image": "https://cdn.cloudflare.steamstatic.com/steam/apps/2904040/header.jpg?t=1713197916",
+    "description": "",
+    "url": "https://store.steampowered.com/app/2904040/Car_Repair/"
   }
 ]
