@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     '@nuxthq/studio',
     '@nuxthub/core',
     'nuxt-auth-utils',
-    "@nuxt/image"
+    '@nuxt/image',
   ],
 
   colorMode: {
@@ -25,5 +25,13 @@ export default defineNuxtConfig({
 
   ui: {
     icons: ['mdi', 'simple-icons'],
+  },
+  runtimeConfig: {
+    oauth: {
+      twitch: {
+        clientId: undefined,
+        clientSecret: undefined,
+      },
+    },
   },
 });
