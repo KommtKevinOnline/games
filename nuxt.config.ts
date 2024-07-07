@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@nuxthq/studio',
     '@nuxthub/core',
     'nuxt-auth-utils',
+    "@nuxt/image"
   ],
 
   colorMode: {
