@@ -7,6 +7,8 @@ export default defineNuxtConfig({
     '@nuxt/content',
     '@nuxtjs/color-mode',
     '@nuxthq/studio',
+    "@nuxthub/core",
+    "nuxt-auth-utils"
   ],
   colorMode: {
     preference: 'dark',
