@@ -15,9 +15,10 @@
       </UBadge>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-8">
-      <a v-for="game in data?.body" :href="game?.url" target="_blank">
+      <a v-for="game in games" :href="game.url ?? undefined" target="_blank">
         <UCard v-if="game" :ui="{ body: { padding: '' } }">
           <img
+            v-if="game.image"
             :src="game.image"
             :alt="`Banner of the game '${game.name}'`"
             class="rounded-t-lg"
@@ -33,7 +34,5 @@
 </template>
 
 <script lang="ts" setup>
-const { data } = await useAsyncData('games', () =>
-  queryContent('/games').findOne()
-);
+const { data: games } = await useFetch('/api/games');
 </script>

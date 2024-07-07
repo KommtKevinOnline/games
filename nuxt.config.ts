@@ -5,9 +5,14 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
+
   compatibilityDate: '2024-07-07',
 
   extends: ['@nuxt/ui-pro'],
+
+  hub: {
+    database: true,
+  },
 
   modules: [
     '@nuxt/ui',
@@ -26,6 +31,7 @@ export default defineNuxtConfig({
   ui: {
     icons: ['mdi', 'simple-icons'],
   },
+
   runtimeConfig: {
     oauth: {
       twitch: {
