@@ -1,5 +1,6 @@
 <template>
   <UContainer>
+    <audio ref="audioPlayer" src="/raffle-sound.webm" />
     <h1 class="text-4xl font-bold mt-8 text-primary">Randomizer</h1>
     <div class="my-8 flex items-start">
       <UButton to="/" icon="i-mdi-controller">Games</UButton>
@@ -62,6 +63,7 @@ function randomizeGames() {
 
 const gamesContainer = ref<HTMLElement | null>(null);
 const divider = ref<HTMLElement | null>(null);
+const audioPlayer = ref<HTMLAudioElement | null>(null);
 const duration = ref(8000);
 const offset = ref(0);
 
@@ -75,6 +77,9 @@ async function roll() {
 
   randomizeGames();
   await new Promise((resolve) => setTimeout(resolve, 100));
+  if (audioPlayer.value) {
+    audioPlayer.value.currentTime = 0;
+  }
 
   duration.value = 8000;
   const gap = 32;
@@ -82,7 +87,12 @@ async function roll() {
 
   offset.value =
     -((width + gap) * (games.value.length - 3)) +
-    Math.floor(Math.random() * (width - 0 + 1) + 0);
+    Math.floor(Math.random() * (width - 0 + 1) + 0) +
+    gap;
+
+  if (audioPlayer.value) {
+    audioPlayer.value.play();
+  }
 
   await new Promise((resolve) => setTimeout(resolve, duration.value));
 
