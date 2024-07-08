@@ -20,7 +20,6 @@ export default defineNuxtConfig({
     '@nuxthub/core',
     'nuxt-auth-utils',
     '@nuxt/image',
-    '@vueuse/nuxt',
   ],
 
   colorMode: {
