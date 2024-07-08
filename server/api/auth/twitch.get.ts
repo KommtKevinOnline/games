@@ -5,6 +5,9 @@ export default oauth.twitchEventHandler({
   async onSuccess(event, { user, tokens }) {
     const config = useRuntimeConfig();
 
+    console.log(config.twitch.mails);
+    console.log(config.twitch.mails.split(','));
+
     if (!config.twitch.mails.split(',').includes(user.email)) {
       throw new Error('You are not allowed to log in');
     }
