@@ -41,7 +41,7 @@ export default defineNuxtConfig({
       apiBase: 'https://api.igdb.com/v4',
     },
     twitch: {
-      mails: '',
+      mails: process.env.NUXT_TWITCH_MAILS,
     },
   },
 
