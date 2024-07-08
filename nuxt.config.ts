@@ -40,6 +40,9 @@ export default defineNuxtConfig({
     igdb: {
       apiBase: 'https://api.igdb.com/v4',
     },
+    twitch: {
+      mails: '',
+    },
   },
 
   nitro: {
