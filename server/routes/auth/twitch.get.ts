@@ -14,6 +14,8 @@ export default oauth.twitchEventHandler({
         name: user.name,
         displayName: user.display_name,
         avatar: user.profile_image_url,
+        // As we only have a user:read:email scope, it is fine to "expose" the access token
+        accessToken: tokens.access_token,
       },
     });
     return sendRedirect(event, '/');

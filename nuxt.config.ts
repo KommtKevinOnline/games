@@ -16,12 +16,11 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/ui',
-    '@nuxt/content',
     '@nuxtjs/color-mode',
-    '@nuxthq/studio',
     '@nuxthub/core',
     'nuxt-auth-utils',
     '@nuxt/image',
+    '@vueuse/nuxt',
   ],
 
   colorMode: {
@@ -38,6 +37,27 @@ export default defineNuxtConfig({
         clientId: undefined,
         clientSecret: undefined,
       },
+    },
+    igdb: {
+      apiBase: 'https://api.igdb.com/v4',
+    },
+  },
+
+  nitro: {
+    experimental: {
+      tasks: true,
+    },
+    imports: {
+      presets: [
+        {
+          from: 'h3-zod',
+          imports: [
+            'useValidatedQuery',
+            'useValidatedBody',
+            'useValidatedParams',
+          ],
+        },
+      ],
     },
   },
 });
