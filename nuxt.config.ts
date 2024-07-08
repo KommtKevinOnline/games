@@ -14,13 +14,7 @@ export default defineNuxtConfig({
     database: true,
   },
 
-  modules: [
-    '@nuxt/ui',
-    '@nuxtjs/color-mode',
-    '@nuxthub/core',
-    'nuxt-auth-utils',
-    '@nuxt/image',
-  ],
+  modules: ['@nuxt/ui', '@nuxtjs/color-mode', 'nuxt-auth-utils', '@nuxt/image'],
 
   colorMode: {
     preference: 'dark',
@@ -42,6 +36,9 @@ export default defineNuxtConfig({
     },
     twitch: {
       mails: process.env.NUXT_TWITCH_MAILS,
+    },
+    db: {
+      path: 'games.db',
     },
   },
 
