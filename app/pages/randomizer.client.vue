@@ -17,7 +17,7 @@
           :style="`transform: translateX(${offset}px); transition-duration: ${duration}ms; transition-timing-function: cubic-bezier(.08,.6,0,1)`"
           ref="gamesContainer"
         >
-          <GameCard v-for="game in games" :game="game" />
+          <randomizer-game-card v-for="game in games" :game="game" />
         </div>
       </div>
       <UButton @click="roll" size="lg" icon="i-mdi-dice">Roll</UButton>
@@ -27,11 +27,8 @@
 
 <script lang="ts" setup>
 import { onMounted } from 'vue';
-import type { Game } from '../types/game';
 
-const { data } = await useAsyncData('games', () =>
-  queryContent<Game>('/games').findOne()
-);
+const { data } = await useFetch('/api/games');
 
 const winner = ref('');
 const games = ref([]);
@@ -40,12 +37,12 @@ const games = ref([]);
  * @description Randomizes the games and adds each game multiple times to the list.
  */
 function randomizeGames() {
-  if (!data.value || !data.value.body) {
+  if (!data.value) {
     games.value = [];
     return;
   }
 
-  const _games = data.value.body
+  const _games = data.value
     .map((game) => Array.from({ length: 3 }, () => game))
     .flat();
 
