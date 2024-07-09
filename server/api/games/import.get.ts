@@ -1,13 +1,8 @@
 import { z } from 'zod';
 import { useIgdb } from '../../composables/igdb';
+import { invalidateGamesCache } from '../../utils/games';
 
 export default defineEventHandler(async (event) => {
-  const query = await useValidatedQuery(event, {
-    id: z.string(),
-  });
-
-  const config = useRuntimeConfig();
-  const drizzle = useDrizzle();
   const session = await getUserSession(event);
 
   if (!session.user || !session.user.accessToken) {
@@ -16,6 +11,12 @@ export default defineEventHandler(async (event) => {
       statusMessage: 'Unauthorized',
     });
   }
+
+  const query = await useValidatedQuery(event, {
+    id: z.string(),
+  });
+
+  const drizzle = useDrizzle();
 
   const igdb = useIgdb(session.user.accessToken);
 
@@ -37,6 +38,8 @@ export default defineEventHandler(async (event) => {
       url: steamUrl ?? null,
     })
     .returning({ id: tables.games.id });
+
+  invalidateGamesCache();
 
   return res[0].id;
 });

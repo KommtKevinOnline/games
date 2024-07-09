@@ -9,20 +9,12 @@
       <search v-if="loggedIn" @result="addGame" />
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-8">
-      <a v-for="game in games" :href="game.url ?? undefined" target="_blank">
-        <UCard :id="game.id" v-if="game" :ui="{ body: { padding: '' } }">
-          <img
-            v-if="game.image"
-            :src="game.image"
-            :alt="`Banner of the game '${game.name}'`"
-            class="rounded-t-lg"
-          />
-
-          <template #footer>
-            <h1 class="text-2xl font-bold">{{ game.name }}</h1>
-          </template>
-        </UCard>
-      </a>
+      <game-card
+        v-for="game in games"
+        :key="game.id"
+        :game="game"
+        @refresh="refresh"
+      />
     </div>
   </UContainer>
 </template>
@@ -44,6 +36,7 @@ async function addGame(gameId: string) {
 
   toast.add({
     title: 'Das Spiel wurde erfolgreich hinzugefügt.',
+    color: 'green',
   });
 
   const elem = document.getElementById(id.toString());

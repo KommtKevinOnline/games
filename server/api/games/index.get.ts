@@ -1,3 +1,5 @@
+import { cachedGames } from '../../utils/games';
+
 export default defineEventHandler(async (event) => {
-  return await useDrizzle().query.games.findMany();
+  return await cachedGames();
 });

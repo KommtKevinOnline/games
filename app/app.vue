@@ -6,6 +6,7 @@
   </UMain>
 
   <Footer />
+  <UNotifications />
 </template>
 
 <script setup lang="ts">
