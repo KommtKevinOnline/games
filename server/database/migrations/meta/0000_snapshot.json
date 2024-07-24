@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "04c94cf0-4f9a-4506-ad4f-02356223d1d3",
+  "id": "912bf2fc-9cb7-41f9-ad1f-8118ef985441",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "categories": {
@@ -139,7 +139,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "games_to_categories_category_id_categories_id_fk": {
@@ -152,7 +152,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },
@@ -197,20 +197,20 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "games_to_modes_mode_id_categories_id_fk": {
-          "name": "games_to_modes_mode_id_categories_id_fk",
+        "games_to_modes_mode_id_game_modes_id_fk": {
+          "name": "games_to_modes_mode_id_game_modes_id_fk",
           "tableFrom": "games_to_modes",
-          "tableTo": "categories",
+          "tableTo": "game_modes",
           "columnsFrom": [
             "mode_id"
           ],
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "set null",
           "onUpdate": "no action"
         }
       },

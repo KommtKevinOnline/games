@@ -23,10 +23,10 @@ export const gamesToCategories = sqliteTable(
   {
     gameId: integer('game_id')
       .notNull()
-      .references(() => games.id),
+      .references(() => games.id, { onDelete: 'cascade' }),
     categoryId: integer('category_id')
       .notNull()
-      .references(() => categories.id),
+      .references(() => categories.id, { onDelete: 'set null' }),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.gameId, t.categoryId] }),
@@ -52,10 +52,10 @@ export const gamesToModes = sqliteTable(
   {
     gameId: integer('game_id')
       .notNull()
-      .references(() => games.id),
+      .references(() => games.id, { onDelete: 'cascade' }),
     modeId: integer('mode_id')
       .notNull()
-      .references(() => categories.id),
+      .references(() => gameModes.id, { onDelete: 'set null' }),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.gameId, t.modeId] }),
