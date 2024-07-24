@@ -16,7 +16,22 @@
     </a>
 
     <template #footer>
-      <h1 class="text-2xl font-bold">{{ game.name }}</h1>
+      <div class="flex flex-col gap-1">
+        <div class="flex gap-1" v-if="game.modes">
+          <UBadge color="gray" v-for="mode in game.modes" size="xs">
+            {{ mode.mode.name }}
+          </UBadge>
+        </div>
+        <h1 class="text-2xl font-bold">
+          {{ game.name }}
+        </h1>
+        <div class="flex gap-1" v-if="game.categories">
+          <category-badge
+            v-for="category in game.categories"
+            v-bind="category.category"
+          />
+        </div>
+      </div>
       <div>
         <game-modal :game @save="emit('refresh')">
           <template #activator="{ props }">
@@ -29,25 +44,21 @@
             />
           </template>
         </game-modal>
-        <!-- <UButton
-          v-if="game.url"
-          icon="i-heroicons-arrow-top-right-on-square"
-          variant="ghost"
-          :to="game.url"
-          target="_blank"
-        /> -->
       </div>
     </template>
   </UCard>
 </template>
 
 <script lang="ts" setup>
-import type { Game } from '../../server/utils/drizzle';
+import type { Category, Game, GameMode } from '~~/server/utils/drizzle';
 
 const { loggedIn } = useUserSession();
 
 const props = defineProps<{
-  game: Game;
+  game: Game & {
+    categories: { gameId: string; category: Category }[];
+    modes: { gameId: string; mode: GameMode }[];
+  };
 }>();
 
 const emit = defineEmits(['refresh']);

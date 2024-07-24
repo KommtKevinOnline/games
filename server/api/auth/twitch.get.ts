@@ -3,9 +3,11 @@ export default oauth.twitchEventHandler({
     emailRequired: true,
   },
   async onSuccess(event, { user, tokens }) {
-    const config = useRuntimeConfig();
+    const isAllowedUser = await useDrizzle().query.users.findFirst({
+      where: eq(tables.users.twitchId, user.id),
+    });
 
-    if (!config.twitch.mails.split(',').includes(user.email)) {
+    if (!isAllowedUser) {
       throw new Error('You are not allowed to log in');
     }
 
@@ -18,6 +20,8 @@ export default oauth.twitchEventHandler({
         avatar: user.profile_image_url,
         // As we only have a user:read:email scope, it is fine to "expose" the access token
         accessToken: tokens.access_token,
+        refreshToken: tokens.refresh_token,
+        expirationDate: new Date(Date.now() + tokens.expires_in * 1000),
       },
     });
     return sendRedirect(event, '/');

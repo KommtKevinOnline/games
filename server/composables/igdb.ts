@@ -25,7 +25,7 @@ export const useIgdb = (bearerToken: string) => {
         'Client-ID': config.oauth.twitch.clientId,
         Authorization: `Bearer ${bearerToken}`,
       },
-      body: `fields name,websites.*,artworks.*,cover.*; where id = ${id};`,
+      body: `fields name,game_modes,websites.*,artworks.*,cover.*; where id = ${id};`,
     });
 
     if (!result || !result[0]) {
@@ -35,8 +35,26 @@ export const useIgdb = (bearerToken: string) => {
     return result[0];
   }
 
+  async function gameModes() {
+    const result = await $fetch<{ id: number; name: string; slug: string }>(
+      '/game_modes',
+      {
+        baseURL: config.igdb.apiBase,
+        method: 'POST',
+        headers: {
+          'Client-ID': config.oauth.twitch.clientId,
+          Authorization: `Bearer ${bearerToken}`,
+        },
+        body: 'fields *; limit 50;',
+      }
+    );
+
+    return result;
+  }
+
   return {
     search,
     getGame,
+    gameModes,
   };
 };

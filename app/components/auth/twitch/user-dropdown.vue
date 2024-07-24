@@ -48,6 +48,11 @@ async function logout() {
 const items = computed(() => [
   [
     {
+      label: 'Admin',
+      icon: 'i-heroicons-shield-exclamation-solid',
+      to: '/admin',
+    },
+    {
       label: 'Abmelden',
       icon: 'i-heroicons-arrow-left-on-rectangle',
       click: () => logout(),

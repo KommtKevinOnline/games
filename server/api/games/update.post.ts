@@ -12,9 +12,10 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const { id, name, image, url } = await useValidatedBody(event, {
+  const { id, name, image, url, categories } = await useValidatedBody(event, {
     id: z.number(),
     name: z.string(),
+    categories: z.array(z.number()).optional(),
     image: z.string(),
     url: z.string(),
   });
@@ -29,6 +30,19 @@ export default defineEventHandler(async (event) => {
       url,
     })
     .where(eq(tables.games.id, id));
+
+  if (categories) {
+    await drizzle
+      .delete(tables.gamesToCategories)
+      .where(eq(tables.gamesToCategories.gameId, id));
+
+    await drizzle.insert(tables.gamesToCategories).values(
+      categories.map((categoryId) => ({
+        gameId: id,
+        categoryId,
+      }))
+    );
+  }
 
   invalidateGamesCache();
 });
