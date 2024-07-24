@@ -12,9 +12,10 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const { id, name, image, url } = await useValidatedBody(event, {
+  const { id, name, image, url, categoryId } = await useValidatedBody(event, {
     id: z.number(),
     name: z.string(),
+    categoryId: z.number().optional(),
     image: z.string(),
     url: z.string(),
   });
@@ -27,6 +28,7 @@ export default defineEventHandler(async (event) => {
       name,
       image,
       url,
+      categoryId,
     })
     .where(eq(tables.games.id, id));
 

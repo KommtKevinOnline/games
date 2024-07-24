@@ -1,140 +1,155 @@
 <template>
-  <UDashboardPage>
-    <UDashboardPanel grow>
-      <UDashboardNavbar title="Kunden" :badge="customers.length">
-        <template #right>
-          <UInput
-            ref="input"
-            v-model="q"
-            icon="i-heroicons-funnel"
-            autocomplete="off"
-            placeholder="Suche..."
-            class="hidden lg:block"
-            @keydown.esc="$event.target.blur()"
-          >
-            <template #trailing>
-              <UKbd value="/" />
-            </template>
-          </UInput>
+  <UContainer>
+    <UDashboardPage>
+      <UDashboardPanel grow>
+        <UDashboardNavbar title="Kategorien" :badge="categories.length">
+          <template #right>
+            <UButton
+              label="Kategorie hinzufügen"
+              trailing-icon="i-heroicons-plus"
+              color="gray"
+              @click="categoryModalOpen = true"
+            />
+          </template>
+        </UDashboardNavbar>
 
-          <UButton
-            label="Kunde hinzufügen"
-            trailing-icon="i-heroicons-plus"
-            color="gray"
-            @click="isNewUserModalOpen = true"
-          />
-        </template>
-      </UDashboardNavbar>
-
-      <UDashboardToolbar>
-        <template #right>
-          <USelectMenu
-            v-model="selectedColumns"
-            icon="i-heroicons-adjustments-horizontal-solid"
-            :options="defaultColumns"
-            multiple
-            class="hidden lg:block"
-          >
-            <template #label>Anzeige</template>
-          </USelectMenu>
-        </template>
-      </UDashboardToolbar>
-
-      <UDashboardModal
-        v-model="isNewUserModalOpen"
-        title="Neuer Kunde"
-        description="Füge einen neuen Kunden hinzu."
-        :ui="{ width: 'sm:max-w-md' }"
-      >
-        <customers-form
-          @close="
-            isNewUserModalOpen = false;
-            refresh();
+        <UDashboardModal
+          v-model="categoryModalOpen"
+          :title="editCategory ? 'Kategorie bearbeiten' : 'Neue Kategorie'"
+          :description="
+            editCategory
+              ? 'Bearbeite die Kategorie.'
+              : 'Erstelle eine neue Kategorie.'
           "
-        />
-      </UDashboardModal>
+          :ui="{ width: 'sm:max-w-md' }"
+        >
+          <category-form
+            :data="editCategory"
+            @close="
+              categoryModalOpen = false;
+              editCategory = undefined;
+              refresh();
+            "
+          />
+        </UDashboardModal>
 
-      <UTable
-        v-model="selected"
-        v-model:sort="sort"
-        :rows="customers"
-        :columns="columns"
-        :loading="pending"
-        sort-mode="manual"
-        class="w-full"
-        :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }"
-        @select="onSelect"
-      >
-        <template #name-data="{ row }">
-          <div class="flex items-center gap-3">
-            <UAvatar v-bind="row.avatar" :alt="row.name" size="xs" />
+        <UTable
+          v-model:sort="sort"
+          :rows="categories"
+          :columns="columns"
+          :loading="status !== 'success'"
+          sort-mode="manual"
+          class="w-full"
+          :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }"
+          :empty-state="{
+            icon: 'i-mdi-tag',
+            label: 'Keine Kategorien.',
+          }"
+        >
+          <template #name-data="{ row }">
+            <div class="flex items-center gap-3">
+              <category-indicator :color="row.color" />
 
-            <span class="text-gray-900 dark:text-white font-medium">
-              {{ row.name }}
-            </span>
-          </div>
-        </template>
-      </UTable>
-    </UDashboardPanel>
-  </UDashboardPage>
+              <span class="text-gray-900 dark:text-white font-medium">
+                {{ row.name }}
+              </span>
+            </div>
+          </template>
+
+          <template #actions-data="{ row }">
+            <div class="flex justify-end">
+              <UDropdown :items="items(row)">
+                <UButton
+                  color="gray"
+                  variant="ghost"
+                  icon="i-heroicons-ellipsis-horizontal-20-solid"
+                />
+              </UDropdown>
+            </div>
+          </template>
+        </UTable>
+      </UDashboardPanel>
+    </UDashboardPage>
+  </UContainer>
 </template>
 
-<script lang="ts" setup>
-import type { InferSelectModel } from 'drizzle-orm';
-import type { customer } from '~/db/schema';
+<script setup lang="ts">
+import type { Category } from '~~/server/utils/drizzle';
 
-type Customer = InferSelectModel<typeof customer>;
+definePageMeta({
+  middleware: 'authenticated',
+});
 
-const defaultColumns = [
+const columns = [
   {
     key: 'name',
     label: 'Name',
     sortable: true,
   },
+  {
+    key: 'actions',
+  },
 ];
 
-const q = ref('');
-const selected = ref<Customer[]>([]);
-const selectedColumns = ref(defaultColumns);
-const selectedStatuses = ref([]);
-const selectedLocations = ref([]);
-const sort = ref({ column: 'id', direction: 'asc' as const });
-const input = ref<{ input: HTMLInputElement }>();
-const isNewUserModalOpen = ref(false);
-
-const columns = computed(() =>
-  defaultColumns.filter((column) => selectedColumns.value.includes(column))
-);
-
-const query = computed(() => ({
-  q: q.value,
-  statuses: selectedStatuses.value,
-  locations: selectedLocations.value,
-  sort: sort.value.column,
-  order: sort.value.direction,
-}));
+const items = (row: { id: number }) => [
+  [
+    {
+      label: 'Edit',
+      icon: 'i-heroicons-pencil-square-20-solid',
+      click: () => openEdit(row.id),
+    },
+  ],
+  [
+    {
+      label: 'Delete',
+      icon: 'i-heroicons-trash-20-solid',
+      click: () => removeCategory(row.id),
+    },
+  ],
+];
 
 const {
-  data: customers,
-  pending,
+  data: categories,
+  status,
   refresh,
-} = await useFetch<Customer[]>('/api/categories', {
-  query,
+} = await useFetch<Category[]>('/api/categories', {
   default: () => [],
 });
 
-function onSelect(row: Customer) {
-  const index = selected.value.findIndex((item) => item.id === row.id);
-  if (index === -1) {
-    selected.value.push(row);
-  } else {
-    selected.value.splice(index, 1);
+const sort = ref({ column: 'id', direction: 'asc' as const });
+const categoryModalOpen = ref(false);
+const editCategory = ref<Category | undefined>(undefined);
+
+function openEdit(categoryId: number) {
+  const category = categories.value.find(
+    (category) => category.id === categoryId
+  );
+
+  if (!category) {
+    return;
   }
+
+  categoryModalOpen.value = true;
+
+  editCategory.value = category;
 }
 
-defineShortcuts({
-  '/': () => {
-    input.value?.input?.focus();
-  },
-});
+const toast = useToast();
+
+async function removeCategory(categoryId: number) {
+  await $fetch('/api/categories/remove', {
+    method: 'POST',
+    query: {
+      id: categoryId,
+    },
+  });
+
+  toast.add({
+    title: 'Kategorie gelöscht',
+    description: 'Die Kategorie wurde erfolgreich gelöscht.',
+    color: 'green',
+  });
+
+  refresh();
+}
 </script>

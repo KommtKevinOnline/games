@@ -1,12 +1,17 @@
 <template>
-  <USelectMenu v-model="model" :options="categories">
+  <USelectMenu
+    :model-value="selectedCategory"
+    @update:model-value="(category: Category) => (modelValue = category.id ?? -1)"
+    :options="categories"
+    :ui="{ wrapper: 'min-w-40' }"
+  >
     <template #label>
-      <template v-if="model">
+      <template v-if="modelValue && selectedCategory">
         <span class="flex items-center -space-x-1">
-          <CategoryIndicator :color="model.color" />
+          <CategoryIndicator :color="selectedCategory.color" />
         </span>
         <span>
-          {{ model.name }}
+          {{ selectedCategory.name }}
         </span>
       </template>
       <template v-else>
@@ -29,14 +34,17 @@
 <script lang="ts" setup>
 import type { Category } from '~~/server/utils/drizzle';
 
-const model = defineModel<Category | null>();
+const modelValue = defineModel<number>({
+  default: () => -1,
+});
 
 const { data: categories } = await useFetch('/api/categories', {
   transform: (categories) => {
-    return categories.map((category) => ({
-      ...category,
-      label: category.name,
-    }));
+    return [{ name: 'Alle', id: -1, color: null }, ...categories];
   },
 });
+
+const selectedCategory = computed(() =>
+  categories.value?.find((category) => category.id === modelValue.value)
+);
 </script>

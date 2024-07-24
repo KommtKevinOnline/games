@@ -1,5 +1,6 @@
 export const cachedGames = defineCachedFunction(
-  async () => await useDrizzle().query.games.findMany(),
+  async () =>
+    await useDrizzle().query.games.findMany({ with: { category: true } }),
   {
     name: 'games',
     maxAge: 60 * 60,

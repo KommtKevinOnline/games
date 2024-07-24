@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "2f918519-801f-40ee-b952-b95c3dbb750a",
-  "prevId": "f5efc1d1-cd0a-4999-9d17-302c1b190f34",
+  "id": "e1cba973-b752-4668-abef-e57a2b92d91e",
+  "prevId": "1a32d976-bcd1-4dac-ba48-ba8f2141593e",
   "tables": {
     "categories": {
       "name": "categories",
@@ -30,6 +30,44 @@
         }
       },
       "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "game_modes": {
+      "name": "game_modes",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "game_modes_slug_unique": {
+          "name": "game_modes_slug_unique",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}

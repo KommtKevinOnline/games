@@ -1,7 +1,7 @@
 <template>
   <span
-    class="flex-shrink-0 w-2 h-2 mt-px rounded-full"
-    :style="{ background: `#${color ?? '#6b7280'}` }"
+    class="flex-shrink-0 size-4 mt-px rounded-full"
+    :style="{ background: `${color ?? '#6b7280'}` }"
   />
 </template>
 

@@ -21,3 +21,17 @@ export const gamesRelations = relations(games, ({ one }) => ({
     references: [categories.id],
   }),
 }));
+
+export const users = sqliteTable('users', {
+  twitchId: text('twitchId').primaryKey(),
+  displayName: text('displayName').notNull(),
+  email: text('email').notNull().unique(),
+  avatar: text('avatar'),
+  godMode: integer('godMode', { mode: 'boolean' }).default(false),
+});
+
+export const gameModes = sqliteTable('game_modes', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  name: text('name').notNull(),
+  slug: text('slug').notNull().unique(),
+});

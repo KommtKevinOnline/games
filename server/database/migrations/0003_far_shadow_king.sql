@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD `godMode` integer DEFAULT false;

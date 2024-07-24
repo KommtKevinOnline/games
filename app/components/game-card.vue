@@ -16,10 +16,12 @@
     </a>
 
     <template #footer>
-      <h1 class="text-2xl font-bold">
-        {{ game.name }}
-        <category-indicator :color="game.category.color" />
-      </h1>
+      <div class="flex items-center gap-2">
+        <h1 class="text-2xl font-bold">
+          {{ game.name }}
+        </h1>
+        <category-badge v-if="game.category" v-bind="game.category" />
+      </div>
       <div>
         <game-modal :game @save="emit('refresh')">
           <template #activator="{ props }">
@@ -38,12 +40,12 @@
 </template>
 
 <script lang="ts" setup>
-import type { Game } from '../../server/utils/drizzle';
+import type { Category, Game } from '~~/server/utils/drizzle';
 
 const { loggedIn } = useUserSession();
 
 const props = defineProps<{
-  game: Game;
+  game: Game & { category: Category };
 }>();
 
 const emit = defineEmits(['refresh']);

@@ -7,18 +7,24 @@
         icon="i-mdi-magnify"
       />
       <div class="flex gap-2">
-        <category-select v-model="filter.category" />
+        <category-select v-model="filter.categoryId" />
         <search v-if="loggedIn" @result="addGame" />
       </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-8">
-      <game-card
-        v-for="game in games"
-        :key="game.id"
-        :game="game"
-        @refresh="refresh"
-      />
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-8"
+      v-if="games.length > 0"
+    >
+      <TransitionGroup name="games-list">
+        <game-card
+          v-for="game in games"
+          :key="game.id"
+          :game="game"
+          @refresh="refresh"
+        />
+      </TransitionGroup>
     </div>
+    <empty-state v-else>Keine Spiele gefunden.</empty-state>
   </UContainer>
 </template>
 
@@ -30,16 +36,19 @@ const toast = useToast();
 
 const filter = ref<{
   search: string;
-  category: Category | null;
+  categoryId?: number;
 }>({
   search: '',
-  category: null,
+  categoryId: undefined,
 });
 
-const { data: games, refresh } = await useFetch('/api/games', {
-  query: filter,
-  watch: [filter],
-});
+const { data: games, refresh } = await useFetch<Game & { category: Category }>(
+  '/api/games',
+  {
+    query: filter,
+    watch: [filter],
+  }
+);
 
 async function addGame(gameId: string) {
   const id = await $fetch('/api/games/import', {
@@ -59,3 +68,15 @@ async function addGame(gameId: string) {
   elem?.scrollIntoView({ behavior: 'smooth' });
 }
 </script>
+
+<style>
+.games-list-enter-active,
+.games-list-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.games-list-enter-from,
+.games-list-leave-to {
+  opacity: 0;
+}
+</style>

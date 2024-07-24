@@ -23,6 +23,15 @@
           />
         </UFormGroup>
 
+        <UFormGroup
+          name="categoryId"
+          label="Kategorie"
+          required
+          :ui="{ container: '' }"
+        >
+          <CategorySelect v-model="state.categoryId" />
+        </UFormGroup>
+
         <UFormGroup name="url" label="Link" required :ui="{ container: '' }">
           <UInput
             v-model="state.url"
@@ -110,6 +119,7 @@ const emit = defineEmits(['save']);
 
 const state = reactive({
   name: props.game.name,
+  categoryId: props.game.categoryId,
   image: props.game.image,
   url: props.game.url,
 });
@@ -147,9 +157,7 @@ async function save() {
       method: 'POST',
       body: {
         id: props.game.id,
-        name: state.name,
-        image: state.image,
-        url: state.url,
+        ...state,
       },
     });
 

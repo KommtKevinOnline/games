@@ -8,11 +8,9 @@
     <template #center>
       <HeaderBtn to="/" icon="i-mdi-controller">Games</HeaderBtn>
       <HeaderBtn to="/randomizer" icon="i-mdi-dice">Randomizer</HeaderBtn>
-      <AuthState v-slot="{ loggedIn }">
-        <template v-if="loggedIn">
-          <HeaderBtn to="/categories" icon="i-mdi-tag">Kategorien</HeaderBtn>
-        </template>
-      </AuthState>
+      <template v-if="loggedIn">
+        <HeaderBtn to="/categories" icon="i-mdi-tag">Kategorien</HeaderBtn>
+      </template>
     </template>
 
     <template #right>
@@ -20,3 +18,7 @@
     </template>
   </UHeader>
 </template>
+
+<script setup lang="ts">
+const { loggedIn } = useUserSession();
+</script>
