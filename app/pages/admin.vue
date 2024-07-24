@@ -8,7 +8,7 @@
               <UIcon name="i-heroicons-user" />
               Benutzer
             </h1>
-            <admin-user-modal>
+            <admin-user-modal @save="refresh">
               <template #activator="{ props }">
                 <UButton
                   v-bind="props"
@@ -38,18 +38,34 @@
                 <p class="text-gray-900 dark:text-white font-medium">
                   {{ user.displayName }}
                 </p>
-                <p class="text-gray-500 dark:text-gray-400">
+                <p
+                  class="text-gray-500 dark:text-gray-400 blur-sm hover:blur-0 transition-all duration-400 cursor-default"
+                  v-if="user.email"
+                >
                   {{ user.email }}
                 </p>
               </div>
             </div>
 
-            <UButton
-              v-if="!user.godMode"
-              icon="i-heroicons-x-mark"
-              variant="ghost"
-              color="red"
-            />
+            <div class="flex gap-1">
+              <UButton
+                v-if="!user.godMode"
+                @click="update(user.twitchId, { godMode: true })"
+                :loading="loading.updateUser"
+                icon="i-heroicons-shield-check-solid"
+                variant="ghost"
+                color="blue"
+              />
+
+              <UButton
+                v-if="!user.godMode"
+                @click="remove(user.twitchId)"
+                :loading="loading.removeUser"
+                icon="i-heroicons-x-mark"
+                variant="ghost"
+                color="red"
+              />
+            </div>
           </div>
         </div>
       </UCard>
@@ -77,7 +93,7 @@
           <UButton
             icon="i-heroicons-circle-stack-20-solid"
             block
-            color="red"
+            color="orange"
             :loading="loading.clearCache"
             @click="clearCache"
           >
@@ -92,7 +108,7 @@
 <script lang="ts" setup>
 import type { User } from '~~/server/utils/drizzle';
 
-const { data: users } = await useFetch<User[]>('/api/users');
+const { data: users, refresh } = await useFetch<User[]>('/api/users');
 
 const toast = useToast();
 
@@ -100,7 +116,70 @@ const loading = reactive({
   syncGameModes: false,
   refetchGameMetadata: false,
   clearCache: false,
+  updateUser: false,
+  removeUser: false,
 });
+
+async function remove(id: string) {
+  try {
+    loading.removeUser = true;
+
+    await $fetch(`/api/users/remove`, {
+      method: 'POST',
+      query: {
+        id,
+      },
+    });
+
+    toast.add({
+      title: 'Benutzer erfolgreich entfernt',
+      color: 'green',
+      icon: 'i-heroicons-check-circle-16-solid',
+    });
+
+    refresh();
+  } catch (error) {
+    toast.add({
+      title: 'Fehler beim entfernen des Benutzers',
+      description: (error as Error).message,
+      color: 'red',
+      icon: 'i-heroicons-exclamation-circle-16-solid',
+    });
+  } finally {
+    loading.removeUser = false;
+  }
+}
+
+async function update(id: string, data: { godMode: boolean }) {
+  try {
+    loading.updateUser = true;
+
+    await $fetch('/api/users/update', {
+      method: 'POST',
+      body: {
+        twitchId: id,
+        ...data,
+      },
+    });
+
+    toast.add({
+      title: 'Benutzer erfolgreich aktualisiert',
+      color: 'green',
+      icon: 'i-heroicons-check-circle-16-solid',
+    });
+
+    refresh();
+  } catch (error) {
+    toast.add({
+      title: 'Fehler beim aktualisieren der Benutzer',
+      description: (error as Error).message,
+      color: 'red',
+      icon: 'i-heroicons-exclamation-circle-16-solid',
+    });
+  } finally {
+    loading.updateUser = false;
+  }
+}
 
 async function syncGameModes() {
   try {

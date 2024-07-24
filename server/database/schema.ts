@@ -25,7 +25,7 @@ export const gamesRelations = relations(games, ({ one }) => ({
 export const users = sqliteTable('users', {
   twitchId: text('twitchId').primaryKey(),
   displayName: text('displayName').notNull(),
-  email: text('email').notNull().unique(),
+  email: text('email').unique(),
   avatar: text('avatar'),
   godMode: integer('godMode', { mode: 'boolean' }).default(false),
 });

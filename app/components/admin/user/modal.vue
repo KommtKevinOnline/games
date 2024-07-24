@@ -21,6 +21,7 @@
         >
           <UInput
             v-model="state.name"
+            placeholder="Papaplatte"
             autocomplete="off"
             icon="i-heroicons-user"
             size="md"
@@ -64,7 +65,7 @@ async function save() {
   saveLoading.value = true;
 
   try {
-    await $fetch('/api/user/add', {
+    await $fetch('/api/users/add', {
       method: 'POST',
       body: {
         name: state.name,

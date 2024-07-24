@@ -1,3 +1,5 @@
+import { desc } from 'drizzle-orm';
+
 export default defineEventHandler(async (event) => {
   const session = await getUserSession(event);
 
@@ -8,5 +10,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  return await useDrizzle().query.users.findMany();
+  return await useDrizzle().query.users.findMany({
+    orderBy: [desc(tables.users.godMode)],
+  });
 });

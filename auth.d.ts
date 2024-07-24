@@ -6,6 +6,8 @@ declare module '#auth-utils' {
     displayName: string;
     avatar: string;
     accessToken: string;
+    expirationDate: Date;
+    refreshToken: string;
   }
 
   interface UserSession {}

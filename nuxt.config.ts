@@ -10,10 +10,6 @@ export default defineNuxtConfig({
 
   extends: ['@nuxt/ui-pro'],
 
-  hub: {
-    database: true,
-  },
-
   modules: ['@nuxt/ui', '@nuxtjs/color-mode', 'nuxt-auth-utils', '@nuxt/image'],
 
   colorMode: {
@@ -55,6 +51,10 @@ export default defineNuxtConfig({
             'useValidatedBody',
             'useValidatedParams',
           ],
+        },
+        {
+          from: 'consola',
+          imports: ['consola'],
         },
       ],
     },

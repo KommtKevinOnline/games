@@ -19,15 +19,8 @@
     {
       "idx": 2,
       "version": "6",
-      "when": 1721851721195,
-      "tag": "0002_long_alice",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1721852150417,
-      "tag": "0003_far_shadow_king",
+      "when": 1721854037991,
+      "tag": "0002_gifted_sharon_carter",
       "breakpoints": true
     }
   ]
