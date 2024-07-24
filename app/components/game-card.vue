@@ -17,14 +17,14 @@
 
     <template #footer>
       <div class="flex flex-col gap-1">
-        <h1 class="text-2xl font-bold">
-          {{ game.name }}
-        </h1>
         <div class="flex gap-1" v-if="game.modes">
-          <UBadge color="gray" v-for="mode in game.modes">
+          <UBadge color="gray" v-for="mode in game.modes" size="xs">
             {{ mode.mode.name }}
           </UBadge>
         </div>
+        <h1 class="text-2xl font-bold">
+          {{ game.name }}
+        </h1>
         <div class="flex gap-1" v-if="game.categories">
           <category-badge
             v-for="category in game.categories"
