@@ -29,7 +29,7 @@
           required
           :ui="{ container: '' }"
         >
-          <CategorySelect v-model="state.categoryId" />
+          <CategorySelect v-model="state.categories" />
         </UFormGroup>
 
         <UFormGroup name="url" label="Link" required :ui="{ container: '' }">
@@ -104,10 +104,10 @@
 </template>
 
 <script setup lang="ts">
-import type { Game } from '~~/server/utils/drizzle';
+import type { Category, Game } from '~~/server/utils/drizzle';
 
 const props = defineProps<{
-  game: Game;
+  game: Game & { categories: { gameId: string; category: Category }[] };
 }>();
 
 const toast = useToast();
@@ -119,7 +119,7 @@ const emit = defineEmits(['save']);
 
 const state = reactive({
   name: props.game.name,
-  categoryId: props.game.categoryId,
+  categories: props.game.categories.map((category) => category.category.id),
   image: props.game.image,
   url: props.game.url,
 });

@@ -37,4 +37,5 @@ export type Game = {
   cover: Cover;
   name: string;
   websites: Website[];
+  game_modes: number[];
 };

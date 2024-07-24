@@ -7,7 +7,8 @@
         icon="i-mdi-magnify"
       />
       <div class="flex gap-2">
-        <category-select v-model="filter.categoryId" />
+        <mode-select v-model="filter.mode" />
+        <category-select v-model="filter.categories" />
         <search v-if="loggedIn" @result="addGame" />
       </div>
     </div>
@@ -36,19 +37,21 @@ const toast = useToast();
 
 const filter = ref<{
   search: string;
-  categoryId?: number;
+  mode: number | null;
+  categories: number[];
 }>({
   search: '',
-  categoryId: undefined,
+  mode: null,
+  categories: [],
 });
 
-const { data: games, refresh } = await useFetch<Game & { category: Category }>(
-  '/api/games',
-  {
-    query: filter,
-    watch: [filter],
-  }
-);
+const { data: games, refresh } = await useFetch<
+  (Game & { category: Category })[]
+>('/api/games', {
+  query: filter,
+  watch: [filter],
+  default: () => [],
+});
 
 async function addGame(gameId: string) {
   const id = await $fetch('/api/games/import', {

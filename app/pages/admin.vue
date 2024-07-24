@@ -22,51 +22,14 @@
         </template>
 
         <div class="flex flex-col gap-2">
-          <div
+          <admin-user-list-item
             v-for="user in users"
             :key="user.twitchId"
-            class="px-3 py-2 -mx-2 last:-mb-2 rounded-md flex items-center gap-3 relative"
-          >
-            <UAvatar
-              :src="user.avatar ?? undefined"
-              :alt="user.displayName"
-              size="md"
-            />
-
-            <div class="text-sm flex-1">
-              <div>
-                <p class="text-gray-900 dark:text-white font-medium">
-                  {{ user.displayName }}
-                </p>
-                <p
-                  class="text-gray-500 dark:text-gray-400 blur-sm hover:blur-0 transition-all duration-400 cursor-default"
-                  v-if="user.email"
-                >
-                  {{ user.email }}
-                </p>
-              </div>
-            </div>
-
-            <div class="flex gap-1">
-              <UButton
-                v-if="!user.godMode"
-                @click="update(user.twitchId, { godMode: true })"
-                :loading="loading.updateUser"
-                icon="i-heroicons-shield-check-solid"
-                variant="ghost"
-                color="blue"
-              />
-
-              <UButton
-                v-if="!user.godMode"
-                @click="remove(user.twitchId)"
-                :loading="loading.removeUser"
-                icon="i-heroicons-x-mark"
-                variant="ghost"
-                color="red"
-              />
-            </div>
-          </div>
+            :user
+            :loading
+            @update="update(user.twitchId, { godMode: true })"
+            @remove="remove(user.twitchId)"
+          />
         </div>
       </UCard>
       <UCard class="break-inside-avoid">
@@ -87,7 +50,13 @@
           >
             Sync Game Modes
           </UButton>
-          <UButton icon="i-heroicons-arrow-path" block color="gray">
+          <UButton
+            icon="i-heroicons-arrow-path"
+            block
+            color="gray"
+            :loading="loading.refetchGameMetadata"
+            @click="refetchGameMetadata"
+          >
             Refetch Game Metadata
           </UButton>
           <UButton
@@ -107,6 +76,8 @@
 
 <script lang="ts" setup>
 import type { User } from '~~/server/utils/drizzle';
+
+const { user: session } = useUserSession();
 
 const { data: users, refresh } = await useFetch<User[]>('/api/users');
 
@@ -200,6 +171,28 @@ async function syncGameModes() {
     });
   } finally {
     loading.syncGameModes = false;
+  }
+}
+
+async function refetchGameMetadata() {
+  try {
+    loading.refetchGameMetadata = true;
+
+    await $fetch('/api/games/sync');
+
+    toast.add({
+      title: 'Metadaten erfolgreich geladen',
+      description: 'Die Metadaten für die Spiele wurden erfolgreiche geladen.',
+      color: 'green',
+    });
+  } catch (error) {
+    toast.add({
+      title: 'Fehler beim nachladen der Metadaten',
+      description: (error as Error).message,
+      color: 'red',
+    });
+  } finally {
+    loading.refetchGameMetadata = false;
   }
 }
 

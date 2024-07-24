@@ -1,9 +1,11 @@
 <template>
   <span
-    class="inline-flex rounded-md items-center font-medium text-xs px-2 py-1"
+    class="inline-flex rounded-md items-center font-medium text-white text-xs px-2 py-1"
     :style="{ 'background-color': color }"
   >
-    <slot>{{ name }}</slot>
+    <slot>
+      {{ name }}
+    </slot>
   </span>
 </template>
 
