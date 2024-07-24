@@ -3,15 +3,20 @@
     <UButton icon="i-mdi-plus" @click="open = true">Spiel hinzufügen</UButton>
 
     <UModal v-model="open">
-      <UCommandPalette
-        @update:model-value="onSelected"
-        :groups="groups"
-        :autoselect="false"
-      >
-        <template #empty-state>
-          <div></div>
-        </template>
-      </UCommandPalette>
+      <UCard>
+        <h3>Suche:</h3>
+        <UCommandPalette
+          @update:model-value="onSelected"
+          :groups="groups"
+          :autoselect="false"
+        >
+          <template #empty-state>
+            <div></div>
+          </template>
+        </UCommandPalette>
+
+        <UInput placeholder="https://steamcommunity.com/123456" />
+      </UCard>
     </UModal>
   </div>
 </template>

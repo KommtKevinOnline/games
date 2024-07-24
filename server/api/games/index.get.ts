@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const games = await cachedGames();
 
   const query = await useValidatedQuery(event, {
-    search: z.string(),
+    search: z.string().default(''),
   });
 
   const search = query.search.toLowerCase();

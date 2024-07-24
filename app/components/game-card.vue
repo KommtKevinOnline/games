@@ -16,7 +16,10 @@
     </a>
 
     <template #footer>
-      <h1 class="text-2xl font-bold">{{ game.name }}</h1>
+      <h1 class="text-2xl font-bold">
+        {{ game.name }}
+        <category-indicator :color="game.category.color" />
+      </h1>
       <div>
         <game-modal :game @save="emit('refresh')">
           <template #activator="{ props }">
@@ -29,13 +32,6 @@
             />
           </template>
         </game-modal>
-        <!-- <UButton
-          v-if="game.url"
-          icon="i-heroicons-arrow-top-right-on-square"
-          variant="ghost"
-          :to="game.url"
-          target="_blank"
-        /> -->
       </div>
     </template>
   </UCard>

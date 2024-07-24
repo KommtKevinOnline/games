@@ -1,18 +1,15 @@
 <template>
   <UContainer>
     <div class="my-8 flex justify-between items-start">
-      <div class="flex gap-4">
-        <UButton to="/randomizer" icon="i-mdi-dice">Randomizer</UButton>
-      </div>
-      <search v-if="loggedIn" @result="addGame" />
-    </div>
-    <div class="my-8 flex justify-between items-start">
       <UInput
         v-model="filter.search"
         placeholder="Suche"
         icon="i-mdi-magnify"
       />
-      <USelect></USelect>
+      <div class="flex gap-2">
+        <category-select v-model="filter.category" />
+        <search v-if="loggedIn" @result="addGame" />
+      </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-8">
       <game-card
@@ -26,11 +23,17 @@
 </template>
 
 <script lang="ts" setup>
+import type { Category } from '~~/server/utils/drizzle';
+
 const { loggedIn } = useUserSession();
 const toast = useToast();
 
-const filter = ref({
+const filter = ref<{
+  search: string;
+  category: Category | null;
+}>({
   search: '',
+  category: null,
 });
 
 const { data: games, refresh } = await useFetch('/api/games', {

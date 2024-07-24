@@ -14,3 +14,4 @@ export function useDrizzle() {
 }
 
 export type Game = typeof schema.games.$inferSelect;
+export type Category = typeof schema.categories.$inferSelect;

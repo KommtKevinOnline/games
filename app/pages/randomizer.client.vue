@@ -1,10 +1,6 @@
 <template>
   <UContainer>
-    <h1 class="text-4xl font-bold mt-8 text-primary">Randomizer</h1>
-    <div class="my-8 flex items-start">
-      <UButton to="/" icon="i-mdi-controller">Games</UButton>
-    </div>
-    <div class="flex flex-col gap-8 justify-center items-center">
+    <div class="flex flex-col gap-8 justify-center items-center mt-8">
       <div
         ref="divider"
         class="w-1 bg-orange-500 absolute h-56 lg:h-[20rem] -translate-y-9 z-10"
