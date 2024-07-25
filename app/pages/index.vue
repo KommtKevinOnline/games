@@ -1,14 +1,19 @@
 <template>
   <UContainer>
-    <div class="my-8 flex justify-between items-start">
-      <UInput
-        v-model="filter.search"
-        placeholder="Suche"
-        icon="i-mdi-magnify"
-      />
-      <div class="flex gap-2">
+    <div class="my-8 grid grid-cols-12 gap-2">
+      <div class="col-span-12 md:col-span-3">
+        <UInput
+          v-model="filter.search"
+          placeholder="Suche"
+          icon="i-mdi-magnify"
+        />
+      </div>
+      <div class="col-span-0 md:col-span-3"></div>
+      <div class="grid grid-cols-2 gap-2 col-span-12 md:col-span-4">
         <mode-select v-model="filter.mode" />
         <category-select v-model="filter.categories" />
+      </div>
+      <div class="flex gap-2 col-span-12 md:col-span-2">
         <search v-if="loggedIn" @result="addGame" />
       </div>
     </div>
@@ -41,7 +46,7 @@ const filter = ref<{
   categories: number[];
 }>({
   search: '',
-  mode: null,
+  mode: -1,
   categories: [],
 });
 

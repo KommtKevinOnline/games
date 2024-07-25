@@ -31,7 +31,11 @@ export default defineEventHandler(async (event) => {
     })
     .where(eq(tables.games.id, id));
 
-  if (categories) {
+  if (categories?.length === 0) {
+    await drizzle
+      .delete(tables.gamesToCategories)
+      .where(eq(tables.gamesToCategories.gameId, id));
+  } else if (categories) {
     await drizzle
       .delete(tables.gamesToCategories)
       .where(eq(tables.gamesToCategories.gameId, id));

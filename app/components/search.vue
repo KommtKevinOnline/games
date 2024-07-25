@@ -1,22 +1,24 @@
 <template>
-  <div>
-    <UButton icon="i-mdi-plus" @click="open = true">Spiel hinzufügen</UButton>
+  <div class="w-full">
+    <UButton icon="i-mdi-plus" @click="open = true" block>
+      Spiel hinzufügen
+    </UButton>
 
     <UModal v-model="open">
-      <UCard>
-        <h3>Suche:</h3>
-        <UCommandPalette
-          @update:model-value="onSelected"
-          :groups="groups"
-          :autoselect="false"
-        >
-          <template #empty-state>
-            <div></div>
-          </template>
-        </UCommandPalette>
+      <!-- <UCard> -->
+      <!-- <h3>Suche:</h3> -->
+      <UCommandPalette
+        @update:model-value="onSelected"
+        :groups="groups"
+        :autoselect="false"
+      >
+        <template #empty-state>
+          <div></div>
+        </template>
+      </UCommandPalette>
 
-        <UInput placeholder="https://steamcommunity.com/123456" />
-      </UCard>
+      <!-- <UInput placeholder="https://steamcommunity.com/123456" /> -->
+      <!-- </UCard> -->
     </UModal>
   </div>
 </template>

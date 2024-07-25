@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
       );
     })
     .filter((game) => {
-      if (!query.mode) {
+      if (!query.mode || query.mode === -1) {
         return true;
       }
 

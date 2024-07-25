@@ -14,7 +14,19 @@ export default defineEventHandler(async (event) => {
     id: z.string().transform((value) => parseInt(value)),
   });
 
-  return await useDrizzle()
+  const drizzle = useDrizzle();
+
+  await drizzle
+    .delete(tables.gamesToCategories)
+    .where(eq(tables.gamesToCategories.categoryId, query.id));
+
+  await drizzle
     .delete(tables.categories)
     .where(eq(tables.categories.id, query.id));
+
+  await invalidateGamesCache();
+
+  return {
+    message: 'Category removed successfully',
+  };
 });
