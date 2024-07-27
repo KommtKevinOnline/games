@@ -49,9 +49,32 @@ const links = [
       {
         label: 'KommtKevinOnline',
         to: 'https://kommtkevinonline.de',
+        target: '_blank',
       },
       {
         label: 'Domos 2023 Voting und Website',
+        to: 'https://domos.live',
+        target: '_blank',
+      },
+    ],
+  },
+  {
+    label: 'Technologien',
+    children: [
+      {
+        label: 'Nuxt 💚',
+        to: 'https://nuxt.com',
+        target: '_blank',
+      },
+      {
+        label: 'IGDB 🎮',
+        to: 'https://igdb.com',
+        target: '_blank',
+      },
+      {
+        label: 'Drizzle 🌧️',
+        to: 'https://orm.drizzle.team/',
+        target: '_blank',
       },
     ],
   },

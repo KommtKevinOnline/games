@@ -39,3 +39,14 @@ export type Game = {
   websites: Website[];
   game_modes: number[];
 };
+
+export type StatusEnum = {
+  0: 'released';
+  2: 'alpha';
+  3: 'beta';
+  4: 'early_access';
+  5: 'offline';
+  6: 'cancelled';
+  7: 'rumored';
+  8: 'delisted';
+};

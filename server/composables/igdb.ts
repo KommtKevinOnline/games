@@ -25,7 +25,7 @@ export const useIgdb = (bearerToken: string) => {
         'Client-ID': config.oauth.twitch.clientId,
         Authorization: `Bearer ${bearerToken}`,
       },
-      body: `fields name,game_modes,websites.*,artworks.*,cover.*; where id = ${id};`,
+      body: `fields name,game_modes,status,websites.*,artworks.*,cover.*,release_dates.*; where id = ${id};`,
     });
 
     if (!result || !result[0]) {
