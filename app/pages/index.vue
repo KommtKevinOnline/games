@@ -8,13 +8,16 @@
           icon="i-mdi-magnify"
         />
       </div>
-      <div class="col-span-0 md:col-span-3"></div>
+      <div
+        class="col-span-0 md:col-span-3"
+        :class="{ 'md:col-span-5': !loggedIn }"
+      ></div>
       <div class="grid grid-cols-2 gap-2 col-span-12 md:col-span-4">
         <mode-select v-model="filter.mode" />
         <category-select v-model="filter.categories" />
       </div>
-      <div class="flex gap-2 col-span-12 md:col-span-2">
-        <search v-if="loggedIn" @result="addGame" />
+      <div v-if="loggedIn" class="flex gap-2 col-span-12 md:col-span-2">
+        <search @result="addGame" />
       </div>
     </div>
     <div

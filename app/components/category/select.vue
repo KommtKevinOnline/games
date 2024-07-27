@@ -4,6 +4,7 @@
     :options="categories"
     value-attribute="id"
     option-attribute="name"
+    icon="i-mdi-tag"
     placeholder="Kategorien auswählen"
     multiple
     :ui="{ wrapper: 'min-w-40' }"

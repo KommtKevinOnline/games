@@ -18,7 +18,7 @@
           <UInput
             v-model="state.name"
             autocomplete="off"
-            icon="i-heroicons-tag-solid"
+            icon="i-heroicons-bars-3-bottom-left-16-solid"
             size="md"
           />
         </UFormGroup>
@@ -30,6 +30,15 @@
           :ui="{ container: '' }"
         >
           <CategorySelect v-model="state.categories" />
+        </UFormGroup>
+
+        <UFormGroup
+          name="modeId"
+          label="Modus"
+          required
+          :ui="{ container: '' }"
+        >
+          <ModeSelect v-model="state.modes" multiple />
         </UFormGroup>
 
         <UFormGroup name="url" label="Link" required :ui="{ container: '' }">
@@ -104,10 +113,12 @@
 </template>
 
 <script setup lang="ts">
-import type { Category, Game } from '~~/server/utils/drizzle';
+import type { Category, Game, GameMode } from '~~/server/utils/drizzle';
 
 const props = defineProps<{
-  game: Game & { categories: { gameId: string; category: Category }[] };
+  game: Game & { categories: { gameId: string; category: Category }[] } & {
+    modes: { modeId: number }[];
+  };
 }>();
 
 const toast = useToast();
@@ -120,6 +131,7 @@ const emit = defineEmits(['save']);
 const state = reactive({
   name: props.game.name,
   categories: props.game.categories.map((category) => category.category.id),
+  modes: props.game.modes.map((mode) => mode.modeId),
   image: props.game.image,
   url: props.game.url,
 });

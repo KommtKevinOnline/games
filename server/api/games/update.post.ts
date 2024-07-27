@@ -12,13 +12,17 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const { id, name, image, url, categories } = await useValidatedBody(event, {
-    id: z.number(),
-    name: z.string(),
-    categories: z.array(z.number()).optional(),
-    image: z.string(),
-    url: z.string(),
-  });
+  const { id, name, image, url, categories, modes } = await useValidatedBody(
+    event,
+    {
+      id: z.number(),
+      name: z.string(),
+      categories: z.array(z.number()).optional(),
+      modes: z.array(z.number()).optional(),
+      image: z.string(),
+      url: z.string(),
+    }
+  );
 
   const drizzle = useDrizzle();
 
@@ -31,6 +35,7 @@ export default defineEventHandler(async (event) => {
     })
     .where(eq(tables.games.id, id));
 
+  // Update Categories
   if (categories?.length === 0) {
     await drizzle
       .delete(tables.gamesToCategories)
@@ -44,6 +49,24 @@ export default defineEventHandler(async (event) => {
       categories.map((categoryId) => ({
         gameId: id,
         categoryId,
+      }))
+    );
+  }
+
+  // Update Modes
+  if (modes?.length === 0) {
+    await drizzle
+      .delete(tables.gamesToModes)
+      .where(eq(tables.gamesToModes.gameId, id));
+  } else if (modes) {
+    await drizzle
+      .delete(tables.gamesToModes)
+      .where(eq(tables.gamesToModes.gameId, id));
+
+    await drizzle.insert(tables.gamesToModes).values(
+      modes.map((modeId) => ({
+        gameId: id,
+        modeId,
       }))
     );
   }
