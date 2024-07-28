@@ -8,6 +8,7 @@ export default oauth.twitchEventHandler({
     });
 
     if (!isAllowedUser) {
+      console.log('User not allowed to log in:', user);
       throw new Error('You are not allowed to log in');
     }
 
