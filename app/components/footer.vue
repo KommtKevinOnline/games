@@ -1,7 +1,11 @@
 <template>
   <UFooter>
     <template #top>
-      <UFooterColumns :links="links" />
+      <UFooterColumns :links="links">
+        <template #left>
+          <Badge class="size-36 fill-gray-900 dark:fill-white" />
+        </template>
+      </UFooterColumns>
     </template>
 
     <template #left>
