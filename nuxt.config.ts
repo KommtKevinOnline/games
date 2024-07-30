@@ -10,14 +10,18 @@ export default defineNuxtConfig({
 
   extends: ['@nuxt/ui-pro'],
 
-  modules: ['@nuxt/ui', '@nuxtjs/color-mode', 'nuxt-auth-utils', '@nuxt/image'],
+  modules: [
+    '@nuxt/ui',
+    '@nuxtjs/color-mode',
+    'nuxt-auth-utils',
+    '@nuxt/image',
+    '@vueuse/nuxt',
+  ],
+
+  css: ['vue-virtual-scroller/dist/vue-virtual-scroller.css'],
 
   colorMode: {
     preference: 'dark',
-  },
-
-  ui: {
-    icons: ['mdi', 'simple-icons'],
   },
 
   runtimeConfig: {

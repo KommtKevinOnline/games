@@ -4,53 +4,111 @@
       Spiel hinzufügen
     </UButton>
 
-    <UModal v-model="open">
-      <!-- <UCard> -->
-      <!-- <h3>Suche:</h3> -->
-      <UCommandPalette
-        @update:model-value="onSelected"
-        :groups="groups"
-        :autoselect="false"
-      >
-        <template #empty-state>
-          <div></div>
+    <UModal
+      v-model="open"
+      @update:model-value="(open) => (!open ? reset() : undefined)"
+    >
+      <UCard>
+        <template #header>
+          <div class="flex items-center justify-between">
+            <h3
+              class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
+            >
+              Spiel hinzufügen
+            </h3>
+            <UButton
+              color="gray"
+              variant="ghost"
+              icon="i-heroicons-x-mark-20-solid"
+              class="-my-1"
+              @click="close"
+            />
+          </div>
         </template>
-      </UCommandPalette>
 
-      <!-- <UInput placeholder="https://steamcommunity.com/123456" /> -->
-      <!-- </UCard> -->
+        <!-- <UFormGroup label="Steam Url" required>
+          <UInput
+            v-model="steamUrl"
+            @update:model-value="debouncedSteamUrl"
+            icon="i-heroicons-link-solid"
+            placeholder="https://store.steampowered.com/app/1234567/Game_Name/"
+          />
+        </UFormGroup>
+
+        <UDivider class="my-4" label="oder" /> -->
+
+        <UInput
+          v-model="search"
+          @update:model-value="debouncedRefresh"
+          icon="i-heroicons-magnifying-glass-20-solid"
+          placeholder="Suche"
+          autofocus
+        />
+
+        <UProgress
+          v-if="status === 'pending'"
+          class="my-2"
+          animation="carousel"
+          size="sm"
+        />
+
+        <div
+          v-if="games.length > 0"
+          class="mt-2 rounded-md max-h-60 overflow-y-scroll"
+        >
+          <list
+            :items="games"
+            item-label="name"
+            item-value="game"
+            @select="(id) => onSelected(id)"
+          />
+        </div>
+      </UCard>
     </UModal>
   </div>
 </template>
 
 <script lang="ts" setup>
+import type { Game } from '~~/server/utils/drizzle';
+
 const open = defineModel<boolean>('open', { default: () => false });
 
 const emit = defineEmits(['result']);
 
-const groups = [
-  {
-    key: 'games',
-    search: async (q?: string) => {
-      if (!q) {
-        return [];
-      }
+const search = ref('');
+// const steamUrl = ref('');
 
-      const games = await $fetch<any[]>('/api/games/search', {
-        query: { query: q },
-      });
+const {
+  data: games,
+  refresh,
+  status,
+} = useFetch<Game[]>('/api/games/search', {
+  query: { query: search },
+  watch: false,
+  immediate: false,
+  default: () => [],
+  transform: (games) =>
+    games.sort((a, b) => (a.name === search.value ? -1 : 1)),
+});
 
-      return games.map((game) => ({
-        id: game.game,
-        label: game.name,
-      }));
-    },
-  },
-];
+// const debouncedSteamUrl = useDebounceFn(() => onSelected(steamUrl.value), 500);
 
-function onSelected(selected: { id: string }) {
-  emit('result', selected.id);
+const debouncedRefresh = useDebounceFn(refresh, 500);
+
+function reset() {
+  search.value = '';
+  // steamUrl.value = '';
+  refresh();
+}
+
+function close() {
   open.value = false;
+  reset();
+}
+
+function onSelected(id: string) {
+  emit('result', id);
+  close();
 }
 </script>
 
