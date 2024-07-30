@@ -15,6 +15,10 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  // force a session refresh if the token is expired
+  //@ts-ignore In this case UserSession is satisfying the UserSessionRequired interface
+  await sessionHooks.callHookParallel('fetch', session, event);
+
   const igdb = useIgdb(session.user.accessToken);
 
   return await igdb.search(query.query);

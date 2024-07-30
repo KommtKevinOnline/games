@@ -26,12 +26,14 @@ export default defineNitroPlugin(() => {
   sessionHooks.hook('fetch', async (session, event) => {
     const isValid = await validateToken(session.user.accessToken);
 
+    consola.debug('[Session] is valid:', isValid);
+
     const config = useRuntimeConfig(event).oauth.twitch;
 
     const now = new Date();
     const expirationDate = new Date(session.user.expirationDate);
 
-    consola.debug(expirationDate < now, expirationDate, now);
+    consola.debug('[Session] is expired:', expirationDate < now);
 
     if (expirationDate < now || !isValid) {
       const data = await $fetch<RefreshTokenResponse>(
@@ -56,16 +58,11 @@ export default defineNitroPlugin(() => {
         now.getTime() + data.expires_in * 1000
       );
 
-      setCookie(event, 'jwt', data.access_token, {
-        httpOnly: true,
-        secure: true,
-        maxAge: data.expires_in,
-      });
-    }
-  });
+      session.user.accessToken = data.access_token;
+      session.user.refreshToken = data.refresh_token;
 
-  sessionHooks.hook('clear', async (session, event) => {
-    await deleteCookie(event, 'jwt');
-    await deleteCookie(event, 'refresh-token');
+      await setUserSession(event, session);
+      consola.debug('[Session] refreshed:', session.user);
+    }
   });
 });
