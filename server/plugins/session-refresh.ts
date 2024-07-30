@@ -8,16 +8,32 @@ type RefreshTokenResponse = {
   token_type: string;
 };
 
+async function validateToken(token: string) {
+  try {
+    await $fetch('https://id.twitch.tv/oauth2/validate', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 export default defineNitroPlugin(() => {
   sessionHooks.hook('fetch', async (session, event) => {
+    const isValid = await validateToken(session.user.accessToken);
+
+    const config = useRuntimeConfig(event).oauth.twitch;
+
     const now = new Date();
     const expirationDate = new Date(session.user.expirationDate);
 
     consola.debug(expirationDate < now, expirationDate, now);
 
-    if (expirationDate < now) {
-      const config = useRuntimeConfig(event).oauth.twitch;
-
+    if (expirationDate < now || !isValid) {
       const data = await $fetch<RefreshTokenResponse>(
         'https://id.twitch.tv/oauth2/token',
         {
