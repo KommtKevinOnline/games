@@ -39,12 +39,12 @@ export default defineEventHandler(async (event) => {
     })
     .returning({ id: tables.games.id });
 
-  await drizzle.insert(tables.gamesToModes).values(
-    game.game_modes.map((mode) => ({
-      gameId: res.id,
-      modeId: mode,
-    }))
-  );
+  // await drizzle.insert(tables.gamesToModes).values(
+  //   game.game_modes.map((mode) => ({
+  //     gameId: res[0].id,
+  //     modeId: mode,
+  //   }))
+  // );
 
   invalidateGamesCache();
 
