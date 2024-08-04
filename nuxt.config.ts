@@ -25,6 +25,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    origin: 'http://localhost:3000',
     oauth: {
       twitch: {
         clientId: undefined,
@@ -36,9 +37,13 @@ export default defineNuxtConfig({
     },
     twitch: {
       mails: process.env.NUXT_TWITCH_MAILS,
+      userId: 50985620,
     },
     db: {
       path: 'games.db',
+    },
+    pubsub: {
+      secret: 'local-secret',
     },
   },
 

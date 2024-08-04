@@ -1,15 +1,16 @@
 <template>
   <UContainer>
     <div class="my-8 grid grid-cols-12 gap-2">
-      <div class="col-span-12 md:col-span-3">
+      <div class="col-span-12 md:col-span-4 flex items-center gap-4">
         <UInput
           v-model="filter.search"
           placeholder="Suche"
           icon="i-mdi-magnify"
         />
+        <UCheckbox v-model="filter.played" label="Gespielte anzeigen" />
       </div>
       <div
-        class="col-span-0 md:col-span-3"
+        class="col-span-0 md:col-span-2"
         :class="{ 'md:col-span-5': !loggedIn }"
       ></div>
       <div class="grid grid-cols-2 gap-2 col-span-12 md:col-span-4">
@@ -47,10 +48,12 @@ const filter = ref<{
   search: string;
   mode: number | null;
   categories: number[];
+  played: boolean;
 }>({
   search: '',
   mode: -1,
   categories: [],
+  played: true,
 });
 
 const { data: games, refresh } = await useFetch<

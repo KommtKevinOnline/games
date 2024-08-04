@@ -7,11 +7,12 @@
     }"
   >
     <a :href="game.url ?? '#'" target="_blank">
-      <img
+      <nuxt-img
         v-if="game.image"
         :src="game.image"
         :alt="`Banner of the game '${game.name}'`"
-        class="rounded-t-lg"
+        class="rounded-t-lg w-full object-cover h-44"
+        :class="{ grayscale: game.played }"
       />
     </a>
 
@@ -22,8 +23,13 @@
             {{ mode.mode.name }}
           </UBadge>
         </div>
-        <h1 class="text-2xl font-bold">
+        <h1 class="text-2xl font-bold flex items-center gap-2">
           {{ game.name }}
+          <UIcon
+            v-if="game.played"
+            name="i-mdi-check-circle"
+            class="text-green-500"
+          />
         </h1>
         <div class="flex gap-1" v-if="game.categories">
           <category-badge

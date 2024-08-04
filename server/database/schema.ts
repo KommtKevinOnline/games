@@ -8,9 +8,11 @@ import {
 
 export const games = sqliteTable('games', {
   id: integer('id').primaryKey({ autoIncrement: true }),
+  igdbId: text('igdbId').unique(),
   name: text('name').notNull(),
   image: text('image'),
   url: text('url'),
+  played: integer('played', { mode: 'boolean' }).default(false),
 });
 
 export const gamesRelations = relations(games, ({ one, many }) => ({

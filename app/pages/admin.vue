@@ -42,24 +42,6 @@
 
         <div class="flex flex-col gap-2">
           <UButton
-            icon="i-heroicons-arrow-down-on-square-stack-16-solid"
-            block
-            color="gray"
-            :loading="loading.syncGameModes"
-            @click="syncGameModes"
-          >
-            Sync Game Modes
-          </UButton>
-          <UButton
-            icon="i-heroicons-arrow-path"
-            block
-            color="gray"
-            :loading="loading.refetchGameMetadata"
-            @click="refetchGameMetadata"
-          >
-            Refetch Game Metadata
-          </UButton>
-          <UButton
             icon="i-heroicons-circle-stack-20-solid"
             block
             color="orange"
@@ -149,50 +131,6 @@ async function update(id: string, data: { godMode: boolean }) {
     });
   } finally {
     loading.updateUser = false;
-  }
-}
-
-async function syncGameModes() {
-  try {
-    loading.syncGameModes = true;
-
-    await $fetch('/api/game-modes/sync');
-
-    toast.add({
-      title: 'Spielmodi synchronisiert',
-      description: 'Die Spielmodi wurden erfolgreich synchronisiert.',
-      color: 'green',
-    });
-  } catch (error) {
-    toast.add({
-      title: 'Fehler beim Synchronisieren der Spielmodi',
-      description: (error as Error).message,
-      color: 'red',
-    });
-  } finally {
-    loading.syncGameModes = false;
-  }
-}
-
-async function refetchGameMetadata() {
-  try {
-    loading.refetchGameMetadata = true;
-
-    await $fetch('/api/games/sync');
-
-    toast.add({
-      title: 'Metadaten erfolgreich geladen',
-      description: 'Die Metadaten für die Spiele wurden erfolgreiche geladen.',
-      color: 'green',
-    });
-  } catch (error) {
-    toast.add({
-      title: 'Fehler beim nachladen der Metadaten',
-      description: (error as Error).message,
-      color: 'red',
-    });
-  } finally {
-    loading.refetchGameMetadata = false;
   }
 }
 

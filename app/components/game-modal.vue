@@ -59,6 +59,21 @@
           />
         </UFormGroup>
 
+        <UCheckbox
+          v-model="state.played"
+          autocomplete="off"
+          icon="i-heroicons-photo-solid"
+          size="md"
+          label="Gespielt"
+        />
+
+        <UAlert
+          description="Wenn das Game in einem Stream als Kategorie gesetzt wird, wird das Spiel automatisch als gespielt markiert."
+          icon="i-heroicons-information-circle-16-solid"
+          color="blue"
+          variant="soft"
+        />
+
         <!-- <UFormGroup
           name="cover"
           label="Cover"
@@ -132,8 +147,9 @@ const state = reactive({
   name: props.game.name,
   categories: props.game.categories.map((category) => category.category.id),
   modes: props.game.modes.map((mode) => mode.modeId),
-  image: props.game.image,
-  url: props.game.url,
+  image: props.game.image ?? '',
+  url: props.game.url ?? '',
+  played: props.game.played ?? false,
 });
 
 const saveLoading = ref(false);

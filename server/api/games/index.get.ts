@@ -17,11 +17,22 @@ export default defineEventHandler(async (event) => {
       .string()
       .optional()
       .transform((value) => (value ? parseInt(value) : undefined)),
+    played: z
+      .string()
+      .optional()
+      .transform((value) => value === 'true'),
   });
 
   const search = query.search.toLowerCase();
 
   const filteredGames = games
+    .filter((game) => {
+      if (!query.played && game.played) {
+        return false;
+      }
+
+      return true;
+    })
     .filter((game) => {
       return game.name.toLowerCase().includes(search);
     })
