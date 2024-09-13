@@ -30,13 +30,7 @@ const { data: categories } = await useFetch('/api/categories', {
 });
 
 const toggleCategory = (categoryId: number) => {
-  if (selectedCategories.value.includes(categoryId)) {
-    selectedCategories.value = selectedCategories.value.filter(
-      (id) => id !== categoryId
-    );
-  } else {
-    selectedCategories.value.push(categoryId);
-  }
+  selectedCategories.value = [categoryId];
 };
 
 const getBadgeStyle = (category: Category) => {
