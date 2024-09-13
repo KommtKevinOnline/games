@@ -6,7 +6,7 @@
     option-attribute="name"
     icon="i-heroicons-user-group-16-solid"
     placeholder="Modus auswählen"
-    :ui="{ wrapper: 'min-w-40' }"
+    :ui="{ wrapper: 'min-w-48' }"
     :multiple
   />
 </template>

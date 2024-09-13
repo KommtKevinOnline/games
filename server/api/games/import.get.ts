@@ -30,9 +30,9 @@ export default defineEventHandler(async (event) => {
     .insert(tables.games)
     .values({
       image: steamUrl
-        ? `https://steamcdn-a.akamaihd.net/steam/apps/${steamUrl
-            .split('/')
-            .at(-1)}/header.jpg`
+        ? `https://steamcdn-a.akamaihd.net/steam/apps/${getIdFromSteamUrl(
+            steamUrl
+          )}/header.jpg`
         : game.cover?.url,
       name: game.name,
       url: steamUrl ?? null,

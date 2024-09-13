@@ -10,6 +10,7 @@ export const games = sqliteTable('games', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   igdbId: text('igdbId').unique(),
   name: text('name').notNull(),
+  comment: text('comment'),
   image: text('image'),
   url: text('url'),
   played: integer('played', { mode: 'boolean' }).default(false),

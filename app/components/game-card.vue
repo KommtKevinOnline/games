@@ -31,6 +31,9 @@
             class="text-green-500"
           />
         </h1>
+        <p class="text-md text-gray-500 dark:text-gray-300 mb-1">
+          {{ game.comment }}
+        </p>
         <div class="flex gap-1" v-if="game.categories">
           <category-badge
             v-for="category in game.categories"

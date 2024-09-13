@@ -23,6 +23,15 @@
           />
         </UFormGroup>
 
+        <UFormGroup name="comment" label="Bemerkung" :ui="{ container: '' }">
+          <UInput
+            v-model="state.comment"
+            autocomplete="off"
+            icon="i-heroicons-bars-3-bottom-left-16-solid"
+            size="md"
+          />
+        </UFormGroup>
+
         <UFormGroup
           name="categoryId"
           label="Kategorie"
@@ -145,6 +154,7 @@ const emit = defineEmits(['save']);
 
 const state = reactive({
   name: props.game.name,
+  comment: props.game.comment ?? '',
   categories: props.game.categories.map((category) => category.category.id),
   modes: props.game.modes.map((mode) => mode.modeId),
   image: props.game.image ?? '',
