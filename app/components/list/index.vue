@@ -38,10 +38,12 @@ const props = withDefaults(
 const emit = defineEmits(['select']);
 
 const items = computed(() => {
-  return props.items.map((item) => ({
-    label: item[props.itemLabel],
-    value: item[props.itemValue],
-  }));
+  return props.items
+    .filter((item) => item[props.itemValue])
+    .map((item) => ({
+      label: item[props.itemLabel],
+      value: item[props.itemValue],
+    }));
 });
 </script>
 

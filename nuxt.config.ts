@@ -52,6 +52,7 @@ export default defineNuxtConfig({
       tasks: true,
     },
     imports: {
+      dirs: ['server/utils'],
       presets: [
         {
           from: 'h3-zod',
