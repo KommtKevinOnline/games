@@ -26,6 +26,13 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     origin: 'http://localhost:3000',
+    public: {
+      name: 'Papaplatte Games',
+      description:
+        'Hier findest du alle Spiele die Papaplatte noch spielen will.',
+      favicon: '/papaplatte.ico',
+      showThanks: 'true',
+    },
     oauth: {
       twitch: {
         clientId: undefined,

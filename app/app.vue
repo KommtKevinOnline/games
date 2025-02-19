@@ -12,9 +12,11 @@
 </template>
 
 <script setup lang="ts">
+const config = useRuntimeConfig();
+
 useSeoMeta({
-  title: 'Papaplatte Games',
-  description: 'Hier findest du alle Spiele die Papaplatte noch spielen will.',
+  title: config.public.name,
+  description: config.public.description,
 });
 
 useHead({
@@ -23,6 +25,13 @@ useHead({
       src: 'https://analytics.niki2k1.dev/js/script.js',
       defer: true,
       'data-domain': 'games.kommtkevinonline.de',
+    },
+  ],
+  link: [
+    {
+      rel: 'icon',
+      type: 'image/x-icon',
+      href: config.public.favicon ?? '/favicon.ico',
     },
   ],
   htmlAttrs: {

@@ -3,7 +3,10 @@
     <template #top>
       <UFooterColumns :links="links">
         <template #left>
-          <Badge class="size-36 fill-gray-900 dark:fill-white" />
+          <Badge
+            v-if="config.public.showThanks === 'true'"
+            class="size-36 fill-gray-900 dark:fill-white"
+          />
         </template>
       </UFooterColumns>
     </template>
@@ -48,8 +51,13 @@
 <script setup lang="ts">
 const links = [
   {
-    label: 'Noch mehr von mir',
+    label: 'Noch mehr von @niki2k1',
     children: [
+      {
+        label: 'Niki2k1.dev',
+        to: 'https://niki2k1.dev',
+        target: '_blank',
+      },
       {
         label: 'KommtKevinOnline',
         to: 'https://kommtkevinonline.de',
@@ -93,21 +101,5 @@ const links = [
   },
 ];
 
-const toast = useToast();
-
-const email = ref('');
-const loading = ref(false);
-
-function onSubmit() {
-  loading.value = true;
-
-  setTimeout(() => {
-    toast.add({
-      title: 'Subscribed!',
-      description: "You've been subscribed to our newsletter.",
-    });
-
-    loading.value = false;
-  }, 1000);
-}
+const config = useRuntimeConfig();
 </script>

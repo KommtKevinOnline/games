@@ -1,7 +1,7 @@
 <template>
   <UHeader :links>
     <template #logo>
-      <h1 class="text-primary">Papaplatte Games</h1>
+      <h1 class="text-primary">{{ config.public.name }}</h1>
       <!-- <UBadge label="SaaS" variant="subtle" class="mb-0.5" /> -->
     </template>
 
@@ -25,6 +25,8 @@
 
 <script setup lang="ts">
 const { loggedIn } = useUserSession();
+
+const config = useRuntimeConfig();
 
 const links = [
   { to: '/', label: 'Games', icon: 'i-mdi-controller' },
