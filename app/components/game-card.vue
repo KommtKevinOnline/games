@@ -8,11 +8,18 @@
   >
     <a :href="game.url ?? '#'" target="_blank">
       <nuxt-img
-        v-if="game.image"
+        v-if="game.image && !imageError"
         :src="game.image"
         :alt="`Banner of the game '${game.name}'`"
         class="rounded-t-lg w-full object-cover h-44"
         :class="{ grayscale: game.played }"
+        @error="handleImageError"
+      />
+      <img
+        v-else
+        src="/no-image.png"
+        alt="No image"
+        class="rounded-t-lg w-full object-cover h-44"
       />
     </a>
 
@@ -71,6 +78,12 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['refresh']);
+
+const imageError = ref(false);
+
+const handleImageError = () => {
+  imageError.value = true;
+};
 </script>
 
 <style></style>

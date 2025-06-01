@@ -9,7 +9,7 @@
       }"
     >
       <template #header>
-        <h2 class="text-2xl font-bold">{{ game.name }}</h2>
+        <h2 class="text-2xl font-bold">{{ title ?? game.name }}</h2>
         <delete-game :game="game" @removed="onRemoved" />
       </template>
 
@@ -32,21 +32,11 @@
           />
         </UFormGroup>
 
-        <UFormGroup
-          name="categoryId"
-          label="Kategorie"
-          required
-          :ui="{ container: '' }"
-        >
+        <UFormGroup name="categoryId" label="Kategorie" :ui="{ container: '' }">
           <CategorySelect v-model="state.categories" />
         </UFormGroup>
 
-        <UFormGroup
-          name="modeId"
-          label="Modus"
-          required
-          :ui="{ container: '' }"
-        >
+        <UFormGroup name="modeId" label="Modus" :ui="{ container: '' }">
           <ModeSelect v-model="state.modes" multiple />
         </UFormGroup>
 
@@ -59,7 +49,7 @@
           />
         </UFormGroup>
 
-        <UFormGroup name="image" label="Image" required :ui="{ container: '' }">
+        <UFormGroup name="image" label="Image" :ui="{ container: '' }">
           <UInput
             v-model="state.image"
             autocomplete="off"
@@ -75,50 +65,6 @@
           size="md"
           label="Gespielt"
         />
-
-        <UAlert
-          description="Wenn das Game in einem Stream als Kategorie gesetzt wird, wird das Spiel automatisch als gespielt markiert."
-          icon="i-heroicons-information-circle-16-solid"
-          color="blue"
-          variant="soft"
-        />
-
-        <!-- <UFormGroup
-          name="cover"
-          label="Cover"
-          class="grid grid-cols-2 gap-2"
-          :ui="{ container: 'flex flex-wrap items-center gap-3', help: 'mt-0' }"
-        >
-          <div class="grid">
-            <img
-              v-if="state.image"
-              :src="state.image"
-              :alt="`Banner of the game '${game.name}'`"
-              class="rounded-t-lg"
-              style="grid-area: 1/1"
-            />
-
-            <div
-              class="flex justify-end items-start p-2"
-              style="grid-area: 1/1"
-            >
-              <UButton
-                icon="i-heroicons-arrow-up-tray-16-solid"
-                color="white"
-                size="md"
-                @click="onFileClick"
-              />
-            </div>
-          </div>
-
-          <input
-            ref="fileRef"
-            type="file"
-            class="hidden"
-            accept=".jpg, .jpeg, .png, .webp, .avif"
-            @change="onFileChange"
-          />
-        </UFormGroup> -->
       </div>
 
       <template #footer>
@@ -137,9 +83,10 @@
 </template>
 
 <script setup lang="ts">
-import type { Category, Game, GameMode } from '~~/server/utils/drizzle';
+import type { Category, Game } from '~~/server/utils/drizzle';
 
 const props = defineProps<{
+  title?: string;
   game: Game & { categories: { gameId: string; category: Category }[] } & {
     modes: { modeId: number }[];
   };
@@ -147,7 +94,6 @@ const props = defineProps<{
 
 const toast = useToast();
 
-// const fileRef = ref<HTMLInputElement>();
 const isOpen = ref(false);
 
 const emit = defineEmits(['save']);
@@ -168,28 +114,20 @@ function onClick() {
   isOpen.value = true;
 }
 
-// function onFileChange(e: Event) {
-//   const input = e.target as HTMLInputElement;
-
-//   if (!input.files?.length) {
-//     return;
-//   }
-
-//   state.image = URL.createObjectURL(input.files[0]);
-// }
-
-// function onFileClick() {
-//   fileRef.value?.click();
-// }
-
 function onRemoved() {
   isOpen.value = false;
   emit('save');
 }
 
 async function save() {
-  saveLoading.value = true;
+  if (props.game.id) {
+    await update();
+  } else {
+    await create();
+  }
+}
 
+async function update() {
   try {
     await $fetch('/api/games/update', {
       method: 'POST',
@@ -211,6 +149,38 @@ async function save() {
   } catch (error) {
     toast.add({
       title: 'Fehler beim Speichern des Spiels',
+      description: error.message,
+      color: 'red',
+      icon: 'i-heroicons-exclamation-circle-16-solid',
+    });
+  } finally {
+    saveLoading.value = false;
+  }
+}
+
+async function create() {
+  saveLoading.value = true;
+
+  try {
+    await $fetch('/api/games/create', {
+      method: 'POST',
+      body: {
+        ...state,
+      },
+    });
+
+    toast.add({
+      title: 'Spiel erstellt',
+      color: 'green',
+      icon: 'i-heroicons-check-circle-16-solid',
+    });
+
+    isOpen.value = false;
+
+    emit('save');
+  } catch (error) {
+    toast.add({
+      title: 'Fehler beim Erstellen des Spiels',
       description: error.message,
       color: 'red',
       icon: 'i-heroicons-exclamation-circle-16-solid',

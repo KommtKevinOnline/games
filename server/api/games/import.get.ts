@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { useIgdb } from '../../composables/igdb';
 import { invalidateGamesCache } from '../../utils/games';
+import { getSteamData } from '../../utils/steam';
+import { Game } from '../../utils/drizzle';
 
 export default defineEventHandler(async (event) => {
   const session = await getUserSession(event);
@@ -13,30 +15,50 @@ export default defineEventHandler(async (event) => {
   }
 
   const query = await useValidatedQuery(event, {
-    id: z.string(),
+    value: z.string(),
   });
+
+  let gameData: Game | null = null;
+
+  if (query.value.startsWith('https://store.steampowered.com/app/')) {
+    gameData = await getSteamData(query.value);
+  } else {
+    const igdb = useIgdb(session.user.accessToken);
+
+    const game = await igdb.getGame(query.value);
+
+    const steamUrl = game.websites.find(
+      (website) => website.category === 13
+    )?.url;
+
+    gameData = {
+      igdbId: game.id.toString(),
+      name: game.name,
+      url: steamUrl ?? null,
+    };
+
+    if (steamUrl) {
+      const { image } = await getSteamData(steamUrl);
+      gameData.image = image;
+    } else if (game.cover?.url) {
+      gameData.image = game.cover.url;
+    }
+  }
+
+  console.log(gameData);
 
   const drizzle = useDrizzle();
 
-  const igdb = useIgdb(session.user.accessToken);
-
-  const game = await igdb.getGame(query.id);
-
-  const steamUrl = game.websites.find(
-    (website) => website.category === 13
-  )?.url;
+  if (!gameData) {
+    return createError({
+      statusCode: 400,
+      statusMessage: 'Invalid game data',
+    });
+  }
 
   const res = await drizzle
     .insert(tables.games)
-    .values({
-      image: steamUrl
-        ? `https://steamcdn-a.akamaihd.net/steam/apps/${getIdFromSteamUrl(
-            steamUrl
-          )}/header.jpg`
-        : game.cover?.url,
-      name: game.name,
-      url: steamUrl ?? null,
-    })
+    .values(gameData)
     .returning({ id: tables.games.id });
 
   // await drizzle.insert(tables.gamesToModes).values(

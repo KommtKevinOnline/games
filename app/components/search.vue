@@ -26,17 +26,6 @@
           </div>
         </template>
 
-        <!-- <UFormGroup label="Steam Url" required>
-          <UInput
-            v-model="steamUrl"
-            @update:model-value="debouncedSteamUrl"
-            icon="i-heroicons-link-solid"
-            placeholder="https://store.steampowered.com/app/1234567/Game_Name/"
-          />
-        </UFormGroup>
-
-        <UDivider class="my-4" label="oder" /> -->
-
         <UInput
           v-model="search"
           @update:model-value="debouncedRefresh"
@@ -63,6 +52,35 @@
             @select="(id) => onSelected(id)"
           />
         </div>
+
+        <game-modal
+          title="Custom Game hinzufügen"
+          :game="newGame"
+          @save="created"
+        >
+          <template #activator="{ props }">
+            <UButton
+              v-bind="props"
+              class="mt-2"
+              block
+              trailing-icon="i-heroicons-arrow-right-20-solid"
+              variant="soft"
+            >
+              Nichts dabei? Custom Game anlegen
+            </UButton>
+          </template>
+        </game-modal>
+
+        <UDivider class="my-4" label="oder" />
+
+        <UFormGroup label="Steam Url" required>
+          <UInput
+            v-model="steamUrl"
+            @update:model-value="debouncedSteamUrl"
+            icon="i-heroicons-link-solid"
+            placeholder="https://store.steampowered.com/app/1234567/Game_Name/"
+          />
+        </UFormGroup>
       </UCard>
     </UModal>
   </div>
@@ -73,10 +91,24 @@ import type { Game } from '~~/server/utils/drizzle';
 
 const open = defineModel<boolean>('open', { default: () => false });
 
-const emit = defineEmits(['result']);
+const emit = defineEmits(['result', 'created']);
 
 const search = ref('');
-// const steamUrl = ref('');
+const steamUrl = ref('');
+
+const emptyGame = {
+  name: '',
+  url: '',
+  image: '',
+  id: 0,
+  igdbId: null,
+  comment: null,
+  played: null,
+  categories: [],
+  modes: [],
+};
+
+const newGame = ref<Game>(structuredClone(emptyGame));
 
 const {
   data: games,
@@ -91,14 +123,20 @@ const {
     games.sort((a, b) => (a.name === search.value ? -1 : 1)),
 });
 
-// const debouncedSteamUrl = useDebounceFn(() => onSelected(steamUrl.value), 500);
+const debouncedSteamUrl = useDebounceFn(() => onSelected(steamUrl.value), 500);
 
 const debouncedRefresh = useDebounceFn(refresh, 500);
 
 function reset() {
   search.value = '';
-  // steamUrl.value = '';
+  steamUrl.value = '';
+  newGame.value = structuredClone(emptyGame);
   refresh();
+}
+
+function created() {
+  close();
+  emit('created');
 }
 
 function close() {

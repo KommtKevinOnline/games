@@ -12,7 +12,7 @@
       <div class="flex gap-2 mt-2 lg:mt-0">
         <mode-select v-model="filter.mode" />
         <!-- <category-select v-model="filter.categories" /> -->
-        <search @result="addGame" v-if="loggedIn" />
+        <search @result="addGame" @created="onCreated" v-if="loggedIn" />
       </div>
     </div>
     <div class="mt-4 mb-8">
@@ -61,10 +61,22 @@ const { data: games, refresh } = await useFetch<
   default: () => [],
 });
 
-async function addGame(gameId: string) {
+function onCreated() {
+  refresh();
+  scrollToBottom();
+}
+
+function scrollToBottom() {
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: 'smooth',
+  });
+}
+
+async function addGame(game: string) {
   const id = await $fetch('/api/games/import', {
     query: {
-      id: gameId,
+      value: game,
     },
   });
 
@@ -75,8 +87,7 @@ async function addGame(gameId: string) {
     color: 'green',
   });
 
-  const elem = document.getElementById(id.toString());
-  elem?.scrollIntoView({ behavior: 'smooth' });
+  scrollToBottom();
 }
 </script>
 
