@@ -14,6 +14,7 @@ export const games = sqliteTable('games', {
   image: text('image'),
   url: text('url'),
   played: integer('played', { mode: 'boolean' }).default(false),
+  released: integer('released', { mode: 'boolean' }).default(true),
 });
 
 export const gamesRelations = relations(games, ({ one, many }) => ({

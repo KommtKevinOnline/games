@@ -21,11 +21,18 @@ export default defineEventHandler(async (event) => {
       .string()
       .optional()
       .transform((value) => value === 'true'),
+    released: z
+      .string()
+      .optional()
+      .transform((value) => value === 'true'),
   });
 
   const search = query.search.toLowerCase();
 
   const filteredGames = games
+    .filter((game) => {
+      return game.released === query.released;
+    })
     .filter((game) => {
       if (!query.played && game.played) {
         return false;
