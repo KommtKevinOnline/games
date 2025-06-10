@@ -65,6 +65,14 @@
           size="md"
           label="Gespielt"
         />
+
+        <UCheckbox
+          v-model="state.released"
+          autocomplete="off"
+          icon="i-heroicons-check-circle-16-solid"
+          size="md"
+          label="Released"
+        />
       </div>
 
       <template #footer>
@@ -106,6 +114,7 @@ const state = reactive({
   image: props.game.image ?? '',
   url: props.game.url ?? '',
   played: props.game.played ?? false,
+  released: props.game.released ?? true,
 });
 
 const saveLoading = ref(false);

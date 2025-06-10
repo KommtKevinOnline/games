@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const { name, image, url, categories, modes, played, comment } =
+  const { name, image, url, categories, modes, played, comment, released } =
     await useValidatedBody(event, {
       name: z.string(),
       categories: z.array(z.number()).optional(),
@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
       image: z.string().optional(),
       url: z.string(),
       played: z.boolean().optional().default(false),
+      released: z.boolean().optional().default(true),
     });
 
   const drizzle = useDrizzle();
@@ -33,6 +34,7 @@ export default defineEventHandler(async (event) => {
       url,
       played,
       comment,
+      released,
     })
     .returning();
 

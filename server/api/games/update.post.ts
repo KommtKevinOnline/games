@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const { id, name, image, url, categories, modes, played, comment } =
+  const { id, name, image, url, categories, modes, played, comment, released } =
     await useValidatedBody(event, {
       id: z.number(),
       name: z.string(),
@@ -22,6 +22,7 @@ export default defineEventHandler(async (event) => {
       image: z.string(),
       url: z.string(),
       played: z.boolean(),
+      released: z.boolean(),
     });
 
   const drizzle = useDrizzle();
@@ -34,6 +35,7 @@ export default defineEventHandler(async (event) => {
       url,
       played,
       comment,
+      released,
     })
     .where(eq(tables.games.id, id));
 
