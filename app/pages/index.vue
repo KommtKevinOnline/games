@@ -21,9 +21,15 @@
     <div class="mt-2">
       <Tabs v-model:tab="filter.released" />
     </div>
+    <UProgress
+      class="space-y-2"
+      v-if="status === 'pending'"
+      animation="carousel"
+      color="primary"
+    />
     <div
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pb-8 mt-4"
-      v-if="games.length > 0"
+      v-else-if="games.length > 0"
     >
       <TransitionGroup name="games-list">
         <game-card
@@ -58,9 +64,11 @@ const filter = ref<{
   released: true,
 });
 
-const { data: games, refresh } = await useFetch<
-  (Game & { category: Category })[]
->('/api/games', {
+const {
+  data: games,
+  status,
+  refresh,
+} = await useFetch<(Game & { category: Category })[]>('/api/games', {
   query: filter,
   watch: [filter],
   default: () => [],
