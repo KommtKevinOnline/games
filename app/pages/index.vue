@@ -41,6 +41,9 @@
       </TransitionGroup>
     </div>
     <empty-state v-else>Keine Spiele gefunden.</empty-state>
+    <div v-if="error" class="text-red-500">
+      {{ error }}
+    </div>
   </UContainer>
 </template>
 
@@ -68,9 +71,10 @@ const {
   data: games,
   status,
   refresh,
+  error,
 } = await useFetch<(Game & { category: Category })[]>('/api/games', {
   query: filter,
-  watch: [filter],
+  dedupe: 'cancel',
   default: () => [],
 });
 

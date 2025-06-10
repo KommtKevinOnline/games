@@ -14,12 +14,14 @@
         class="rounded-t-lg w-full object-cover h-44"
         :class="{ grayscale: game.played }"
         @error="handleImageError"
+        loading="lazy"
       />
       <img
         v-else
         src="/no-image.png"
         alt="No image"
         class="rounded-t-lg w-full object-cover h-44"
+        loading="lazy"
       />
     </a>
 
