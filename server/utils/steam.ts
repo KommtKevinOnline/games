@@ -13,9 +13,7 @@ export async function getSteamData(url: string) {
 
   const document = dom.window.document;
 
-  const title = document
-    .querySelector('meta[property="og:title"]')
-    ?.getAttribute('content');
+  const title = document.querySelector('#appHubAppName')?.textContent;
   const image = document
     .querySelector('meta[property="og:image"]')
     ?.getAttribute('content');
@@ -24,7 +22,7 @@ export async function getSteamData(url: string) {
     ?.getAttribute('content');
 
   return {
-    name: title?.replace(' on Steam', ''),
+    name: title?.replace(' on Steam', '').replace('Save 10% on ', ''),
     image,
     url: metaUrl,
   };
