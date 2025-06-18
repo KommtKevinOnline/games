@@ -59,7 +59,7 @@ export default defineEventHandler(async (event) => {
   const res = await drizzle
     .insert(tables.games)
     .values(gameData)
-    .returning({ id: tables.games.id });
+    .returning({ id: tables.games.id, released: tables.games.released });
 
   // await drizzle.insert(tables.gamesToModes).values(
   //   game.game_modes.map((mode) => ({
@@ -70,5 +70,5 @@ export default defineEventHandler(async (event) => {
 
   invalidateGamesCache();
 
-  return res[0].id;
+  return res[0];
 });

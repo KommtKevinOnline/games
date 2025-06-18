@@ -91,7 +91,7 @@ function scrollToBottom() {
 }
 
 async function addGame(game: string) {
-  const id = await $fetch('/api/games/import', {
+  const gameData = await $fetch('/api/games/import', {
     query: {
       value: game,
     },
@@ -103,6 +103,10 @@ async function addGame(game: string) {
     title: 'Das Spiel wurde erfolgreich hinzugefügt.',
     color: 'green',
   });
+
+  if (gameData?.released === false) {
+    filter.value.released = false;
+  }
 
   scrollToBottom();
 }
