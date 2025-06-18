@@ -21,9 +21,12 @@ export async function getSteamData(url: string) {
     .querySelector('meta[property="og:url"]')
     ?.getAttribute('content');
 
+  const comingSoon = document.querySelector('.game_area_comingsoon');
+
   return {
     name: title?.replace(' on Steam', '').replace('Save 10% on ', ''),
     image,
     url: metaUrl,
+    released: !comingSoon,
   };
 }
