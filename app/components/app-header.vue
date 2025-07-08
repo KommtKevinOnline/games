@@ -1,7 +1,9 @@
 <template>
   <UHeader toggle-side="left">
     <template #left>
-      <h1 class="text-primary">{{ config.public.name }}</h1>
+      <h1 class="text-primary font-semibold text-xl">
+        {{ config.public.name }}
+      </h1>
     </template>
 
     <UNavigationMenu :items="links" />
