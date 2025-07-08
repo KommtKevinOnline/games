@@ -27,7 +27,7 @@
     "drizzle-orm": "^0.44.2",
     "h3-zod": "^0.5.3",
     "jsdom": "^26.1.0",
-    "nuxt": "^3.17.6",
+    "nuxt": "^4.0.0-rc.0",
     "nuxt-auth-utils": "^0.5.20",
     "tailwindcss": "^4.1.11",
     "vue": "^3.5.17",
