@@ -3,7 +3,7 @@
     class="flex-1 overflow-y-auto divide-y divide-gray-100 dark:divide-gray-800 scroll-py-2"
   >
     <div class="p-2">
-      <div class="text-sm text-gray-700 dark:text-gray-200">
+      <div class="text-sm text-neutral-700 dark:text-neutral-200">
         <RecycleScroller
           class="scroller"
           :items="items"

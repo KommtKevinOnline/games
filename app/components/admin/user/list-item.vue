@@ -11,23 +11,16 @@
     <div class="text-md flex-1">
       <div>
         <p
-          class="text-gray-900 dark:text-white font-medium flex items-center gap-2"
+          class="text-neutral-900 dark:text-white font-medium flex items-center gap-2"
           :class="{
             '!text-blue-400': user.godMode,
           }"
         >
           <UTooltip text="Kann nicht entfernt werden" v-if="user.godMode">
-            <UIcon name="i-heroicons-shield-check-solid" color="orange-400" />
+            <UIcon name="i-lucide-shield-check" color="warning" />
           </UTooltip>
           {{ user.displayName }}
         </p>
-        <!-- <p
-          class="text-gray-500 dark:text-gray-400 blur-sm transition-all duration-400 cursor-pointer select-none"
-          :class="{ 'blur-0': showMail }"
-          @click="showMail = !showMail"
-        >
-          {{ user.email }}
-        </p> -->
       </div>
     </div>
 
@@ -36,9 +29,9 @@
         <UButton
           @click="emit('update')"
           :loading="loading.updateUser"
-          icon="i-heroicons-shield-check-solid"
+          icon="i-lucide-shield-check"
           variant="ghost"
-          color="blue"
+          color="info"
         />
       </UTooltip>
 
@@ -46,9 +39,9 @@
         <UButton
           @click="emit('remove')"
           :loading="loading.removeUser"
-          icon="i-heroicons-x-mark"
+          icon="i-lucide-x"
           variant="ghost"
-          color="red"
+          color="error"
         />
       </UTooltip>
     </div>
@@ -58,13 +51,9 @@
 <script lang="ts" setup>
 import type { User } from '~~/server/utils/drizzle';
 
-// const { user: session } = useUserSession();
-
 const props = defineProps<{ user: User; loading: Record<string, boolean> }>();
 
 const emit = defineEmits(['update', 'remove']);
-
-// const showMail = ref(false);
 </script>
 
 <style></style>

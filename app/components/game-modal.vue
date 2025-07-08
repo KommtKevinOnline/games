@@ -1,92 +1,104 @@
 <template>
   <slot name="activator" :props="{ onClick }" />
 
-  <UModal v-model="isOpen" :ui="{ width: 'md:max-w-2xl' }">
-    <UCard
-      :ui="{
-        header: { base: 'flex justify-between' },
-        footer: { base: 'flex justify-end gap-2' },
-      }"
-    >
-      <template #header>
-        <h2 class="text-2xl font-bold">{{ title ?? game.name }}</h2>
-        <delete-game :game="game" @removed="onRemoved" />
-      </template>
+  <UModal v-model:open="isOpen">
+    <template #content>
+      <UCard
+        :ui="{
+          header: 'flex justify-between',
+          footer: 'flex justify-end gap-2',
+        }"
+      >
+        <template #header>
+          <h2 class="text-2xl font-bold">{{ title ?? game.name }}</h2>
+          <delete-game :game="game" @removed="onRemoved" />
+        </template>
 
-      <div class="flex flex-col gap-4">
-        <UFormGroup name="name" label="Name" required :ui="{ container: '' }">
-          <UInput
-            v-model="state.name"
+        <div class="flex flex-col gap-4">
+          <UFormField name="name" label="Name" required>
+            <UInput
+              class="w-full"
+              v-model="state.name"
+              autocomplete="off"
+              icon="i-lucide-align-left"
+              size="md"
+            />
+          </UFormField>
+
+          <UFormField name="comment" label="Bemerkung" :ui="{ container: '' }">
+            <UInput
+              class="w-full"
+              v-model="state.comment"
+              autocomplete="off"
+              icon="i-lucide-message-square"
+              size="md"
+            />
+          </UFormField>
+
+          <UFormField
+            name="categoryId"
+            label="Kategorie"
+            :ui="{ container: '' }"
+          >
+            <CategorySelect class="w-full" v-model="state.categories" />
+          </UFormField>
+
+          <UFormField name="modeId" label="Modus" :ui="{ container: '' }">
+            <ModeSelect class="w-full" v-model="state.modes" multiple />
+          </UFormField>
+
+          <UFormField name="url" label="Link" required :ui="{ container: '' }">
+            <UInput
+              class="w-full"
+              v-model="state.url"
+              autocomplete="off"
+              icon="i-lucide-link"
+              size="md"
+            />
+          </UFormField>
+
+          <UFormField name="image" label="Image" :ui="{ container: '' }">
+            <UInput
+              class="w-full"
+              v-model="state.image"
+              autocomplete="off"
+              icon="i-lucide-image"
+              size="md"
+            />
+          </UFormField>
+
+          <UCheckbox
+            class="w-full"
+            v-model="state.played"
             autocomplete="off"
-            icon="i-heroicons-bars-3-bottom-left-16-solid"
             size="md"
+            label="Gespielt"
           />
-        </UFormGroup>
 
-        <UFormGroup name="comment" label="Bemerkung" :ui="{ container: '' }">
-          <UInput
-            v-model="state.comment"
+          <UCheckbox
+            class="w-full"
+            v-model="state.released"
             autocomplete="off"
-            icon="i-heroicons-bars-3-bottom-left-16-solid"
             size="md"
+            label="Released"
           />
-        </UFormGroup>
+        </div>
 
-        <UFormGroup name="categoryId" label="Kategorie" :ui="{ container: '' }">
-          <CategorySelect v-model="state.categories" />
-        </UFormGroup>
-
-        <UFormGroup name="modeId" label="Modus" :ui="{ container: '' }">
-          <ModeSelect v-model="state.modes" multiple />
-        </UFormGroup>
-
-        <UFormGroup name="url" label="Link" required :ui="{ container: '' }">
-          <UInput
-            v-model="state.url"
-            autocomplete="off"
-            icon="i-heroicons-link-solid"
-            size="md"
-          />
-        </UFormGroup>
-
-        <UFormGroup name="image" label="Image" :ui="{ container: '' }">
-          <UInput
-            v-model="state.image"
-            autocomplete="off"
-            icon="i-heroicons-photo-solid"
-            size="md"
-          />
-        </UFormGroup>
-
-        <UCheckbox
-          v-model="state.played"
-          autocomplete="off"
-          icon="i-heroicons-photo-solid"
-          size="md"
-          label="Gespielt"
-        />
-
-        <UCheckbox
-          v-model="state.released"
-          autocomplete="off"
-          icon="i-heroicons-check-circle-16-solid"
-          size="md"
-          label="Released"
-        />
-      </div>
-
-      <template #footer>
-        <UButton color="gray" @click="isOpen = false">Abbrechen</UButton>
-        <UButton
-          color="green"
-          :loading="saveLoading"
-          @click="save"
-          icon="i-heroicons-check-16-solid"
-        >
-          Speichern
-        </UButton>
-      </template>
-    </UCard>
+        <template #footer>
+          <UButton color="neutral" variant="link" @click="isOpen = false">
+            Abbrechen
+          </UButton>
+          <UButton
+            color="success"
+            :loading="saveLoading"
+            @click="save"
+            icon="i-lucide-check"
+          >
+            Speichern
+          </UButton>
+        </template>
+      </UCard>
+    </template>
   </UModal>
 </template>
 
@@ -148,8 +160,8 @@ async function update() {
 
     toast.add({
       title: 'Spiel gespeichert',
-      color: 'green',
-      icon: 'i-heroicons-check-circle-16-solid',
+      color: 'success',
+      icon: 'i-lucide-circle-check',
     });
 
     isOpen.value = false;
@@ -159,8 +171,8 @@ async function update() {
     toast.add({
       title: 'Fehler beim Speichern des Spiels',
       description: error.message,
-      color: 'red',
-      icon: 'i-heroicons-exclamation-circle-16-solid',
+      color: 'error',
+      icon: 'i-lucide-circle-x',
     });
   } finally {
     saveLoading.value = false;
@@ -180,8 +192,8 @@ async function create() {
 
     toast.add({
       title: 'Spiel erstellt',
-      color: 'green',
-      icon: 'i-heroicons-check-circle-16-solid',
+      color: 'success',
+      icon: 'i-lucide-circle-check',
     });
 
     isOpen.value = false;
@@ -191,8 +203,8 @@ async function create() {
     toast.add({
       title: 'Fehler beim Erstellen des Spiels',
       description: error.message,
-      color: 'red',
-      icon: 'i-heroicons-exclamation-circle-16-solid',
+      color: 'error',
+      icon: 'i-lucide-circle-x',
     });
   } finally {
     saveLoading.value = false;

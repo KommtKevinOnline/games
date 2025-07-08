@@ -8,7 +8,7 @@
       class="w-48 h-16 mx-auto mb-4"
     />
     <p
-      class="text-lg font-semibold text-center text-gray-900 dark:text-white/80"
+      class="text-lg font-semibold text-center text-neutral-900 dark:text-white/80"
     >
       <slot />
     </p>

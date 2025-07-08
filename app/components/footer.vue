@@ -1,55 +1,59 @@
 <template>
-  <UFooter>
-    <template #top>
-      <UFooterColumns :links="links">
-        <template #left>
-          <Badge
-            v-if="config.public.showThanks === 'true'"
-            class="size-36 fill-gray-900 dark:fill-white"
-          />
-        </template>
-      </UFooterColumns>
-    </template>
+  <UContainer>
+    <UFooter>
+      <template #top>
+        <UFooterColumns :columns="columns">
+          <template #left>
+            <Badge
+              v-if="config.public.showThanks === 'true'"
+              class="size-36 fill-neutral-900 dark:fill-white"
+            />
+          </template>
+        </UFooterColumns>
+      </template>
 
-    <template #left>
-      <p class="text-gray-500 dark:text-gray-400 text-sm">
-        Copyright © {{ new Date().getFullYear() }} Niklas Lausch. Alle Rechte
-        vorbehalten.
-      </p>
-    </template>
+      <template #left>
+        <p class="text-neutral-500 dark:text-neutral-400 text-sm">
+          Copyright © {{ new Date().getFullYear() }} Niklas Lausch. Alle Rechte
+          vorbehalten.
+        </p>
+      </template>
 
-    <template #center>
-      <UColorModeButton size="sm" />
-    </template>
+      <template #center>
+        <UColorModeButton size="sm" />
+      </template>
 
-    <template #right>
-      <UButton
-        icon="i-simple-icons-x"
-        color="gray"
-        variant="ghost"
-        to="https://x.com/niki2k1"
-        target="_blank"
-      />
-      <UButton
-        icon="i-simple-icons-instagram"
-        color="gray"
-        variant="ghost"
-        to="https://instagram.com/niki2k1"
-        target="_blank"
-      />
-      <UButton
-        icon="i-simple-icons-github"
-        color="gray"
-        variant="ghost"
-        to="https://github.com/Niki2k1"
-        target="_blank"
-      />
-    </template>
-  </UFooter>
+      <template #right>
+        <UButton
+          icon="i-simple-icons-x"
+          color="neutral"
+          variant="ghost"
+          to="https://x.com/niki2k1"
+          target="_blank"
+        />
+        <UButton
+          icon="i-simple-icons-instagram"
+          color="neutral"
+          variant="ghost"
+          to="https://instagram.com/niki2k1"
+          target="_blank"
+        />
+        <UButton
+          icon="i-simple-icons-github"
+          color="neutral"
+          variant="ghost"
+          to="https://github.com/Niki2k1"
+          target="_blank"
+        />
+      </template>
+    </UFooter>
+  </UContainer>
 </template>
 
 <script setup lang="ts">
-const links = [
+import type { FooterColumn } from '@nuxt/ui-pro';
+
+const columns = [
   {
     label: 'Noch mehr von @niki2k1',
     children: [
@@ -99,7 +103,7 @@ const links = [
       },
     ],
   },
-];
+] satisfies FooterColumn[];
 
 const config = useRuntimeConfig();
 </script>

@@ -1,15 +1,15 @@
 <template>
-  <USelectMenu
+  <USelect
     v-model="selectedCategories"
-    :options="categories"
-    value-attribute="id"
-    option-attribute="name"
+    :items="categories"
+    value-key="id"
+    label-key="name"
     icon="i-mdi-tag"
     placeholder="Kategorien auswählen"
     multiple
-    :ui="{ wrapper: 'min-w-40' }"
+    class="min-w-40"
   >
-    <template #option="{ option: category }">
+    <template #item="{ item: category }">
       <span class="flex items-center -space-x-1">
         <CategoryIndicator :color="category.color" />
       </span>
@@ -17,7 +17,7 @@
         {{ category.name }}
       </span>
     </template>
-  </USelectMenu>
+  </USelect>
 </template>
 
 <script lang="ts" setup>
@@ -25,5 +25,13 @@ const selectedCategories = defineModel<number[]>({
   default: () => [],
 });
 
-const { data: categories } = await useFetch('/api/categories');
+const { data: categories } = await useFetch<
+  {
+    id: number;
+    name: string;
+    color: string;
+  }[]
+>('/api/categories', {
+  default: () => [],
+});
 </script>

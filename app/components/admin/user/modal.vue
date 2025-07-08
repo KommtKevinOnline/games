@@ -1,46 +1,42 @@
 <template>
   <slot name="activator" :props="{ onClick }" />
 
-  <UModal v-model="isOpen" :ui="{ width: 'md:max-w-2xl' }">
-    <UCard
-      :ui="{
-        header: { base: 'flex justify-between' },
-        footer: { base: 'flex justify-end gap-2' },
-      }"
-    >
-      <template #header>
-        <h2 class="text-2xl font-bold">Benutzer hinzufügen</h2>
-      </template>
-
+  <UModal v-model:open="isOpen" title="Benutzer hinzufügen">
+    <template #body>
       <div class="flex flex-col gap-4">
-        <UFormGroup
+        <UFormField
           name="name"
           label="Twitch Name"
           required
           :ui="{ container: '' }"
         >
           <UInput
+            class="w-full"
             v-model="state.name"
             placeholder="Papaplatte"
             autocomplete="off"
-            icon="i-heroicons-user"
+            icon="i-lucide-user"
             size="md"
           />
-        </UFormGroup>
+        </UFormField>
       </div>
+    </template>
 
-      <template #footer>
-        <UButton color="gray" @click="isOpen = false">Abbrechen</UButton>
+    <template #footer>
+      <div class="flex w-full justify-end gap-2">
+        <UButton color="neutral" variant="subtle" @click="isOpen = false">
+          Abbrechen
+        </UButton>
         <UButton
-          color="green"
+          color="success"
           :loading="saveLoading"
           @click="save"
-          icon="i-heroicons-check-16-solid"
+          icon="i-lucide-check"
         >
           Speichern
         </UButton>
-      </template>
-    </UCard>
+      </div>
+    </template>
   </UModal>
 </template>
 
@@ -74,8 +70,8 @@ async function save() {
 
     toast.add({
       title: 'Benutzer hinzugefügt',
-      color: 'green',
-      icon: 'i-heroicons-check-circle-16-solid',
+      color: 'success',
+      icon: 'i-lucide-circle-check',
     });
 
     isOpen.value = false;
@@ -85,8 +81,8 @@ async function save() {
     toast.add({
       title: 'Fehler beim hinzufügen des Benutzers',
       description: (error as Error).message,
-      color: 'red',
-      icon: 'i-heroicons-exclamation-circle-16-solid',
+      color: 'error',
+      icon: 'i-lucide-circle-x',
     });
   } finally {
     saveLoading.value = false;

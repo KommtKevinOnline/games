@@ -2,28 +2,26 @@
   <div>
     <UButton
       icon="i-mdi-delete"
-      color="red"
+      color="error"
       variant="ghost"
       @click="isOpen = true"
     />
 
-    <UModal v-model="isOpen">
-      <UCard>
-        <template #header>
-          <h1 class="text-2xl font-bold">Spiel löschen</h1>
-        </template>
-
+    <UModal v-model:open="isOpen" title="Spiel löschen">
+      <template #body>
         Bist du sicher, dass du
         <b>{{ game.name }}</b>
         löschen möchtest?
+      </template>
 
-        <template #footer>
-          <div class="flex justify-end gap-2">
-            <UButton color="gray" @click="isOpen = false">Abbrechen</UButton>
-            <UButton color="red" @click="remove">Ja</UButton>
-          </div>
-        </template>
-      </UCard>
+      <template #footer>
+        <div class="w-full flex justify-end gap-2">
+          <UButton color="neutral" @click="isOpen = false" variant="ghost">
+            Abbrechen
+          </UButton>
+          <UButton color="error" @click="remove">Ja</UButton>
+        </div>
+      </template>
     </UModal>
   </div>
 </template>
@@ -49,7 +47,8 @@ async function remove() {
 
   toast.add({
     title: 'Das Spiel wurde erfolgreich gelöscht.',
-    color: 'green',
+    icon: 'i-lucide-circle-check',
+    color: 'success',
   });
 
   emit('removed');

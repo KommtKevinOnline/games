@@ -18,7 +18,7 @@
     <div class="mt-4 mb-6">
       <category-badges v-model="filter.categories" />
     </div>
-    <div class="mt-2">
+    <div class="my-2">
       <Tabs v-model:tab="filter.released" />
     </div>
     <UProgress

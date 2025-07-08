@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-between select-none items-center rounded-md px-2.5 py-1.5 gap-2 relative cursor-pointer hover:bg-gray-100 hover:dark:bg-gray-800"
+    class="flex justify-between select-none items-center rounded-md px-2.5 py-1.5 gap-2 relative cursor-pointer hover:bg-neutral-100 hover:dark:bg-neutral-800"
     aria-selected="false"
   >
     <div class="flex items-center gap-1.5 min-w-0">

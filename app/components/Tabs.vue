@@ -1,26 +1,34 @@
 <template>
   <UTabs
-    :model-value="Number(!tab)"
+    v-model="activeTab"
+    class="w-full"
     :items="items"
-    @update:model-value="onUpdate"
+    :content="false"
+    variant="link"
+    :ui="{ trigger: 'grow' }"
   />
 </template>
 
 <script lang="ts" setup>
+import type { TabsItem } from '@nuxt/ui';
+
 const tab = defineModel<boolean>('tab');
 
-function onUpdate(value: number) {
-  tab.value = value === 0;
-}
+const activeTab = computed({
+  get: () => (tab.value ? 'released' : 'unreleased'),
+  set: (value: string) => {
+    tab.value = value === 'released';
+  },
+});
 
 const items = [
   {
+    value: 'released',
     label: 'Released',
   },
   {
+    value: 'unreleased',
     label: 'Unreleased',
   },
-];
+] satisfies TabsItem[];
 </script>
-
-<style></style>
