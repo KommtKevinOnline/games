@@ -59,6 +59,9 @@ importers:
       nuxt-auth-utils:
         specifier: ^0.5.20
         version: 0.5.20(magicast@0.3.5)
+      tailwindcss:
+        specifier: ^4.1.11
+        version: 4.1.11
       vue:
         specifier: ^3.5.17
         version: 3.5.17(typescript@5.8.3)
