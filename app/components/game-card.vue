@@ -2,8 +2,8 @@
   <UCard
     :id="game.id"
     :ui="{
-      body: { padding: '' },
-      footer: { base: 'flex justify-between items-center' },
+      body: 'p-0 sm:p-0',
+      footer: 'flex justify-between items-center',
     }"
   >
     <a :href="game.url ?? '#'" target="_blank">
@@ -28,7 +28,12 @@
     <template #footer>
       <div class="flex flex-col gap-1">
         <div class="flex gap-1" v-if="game.modes">
-          <UBadge color="gray" v-for="mode in game.modes" size="xs">
+          <UBadge
+            color="neutral"
+            v-for="mode in game.modes"
+            size="sm"
+            variant="subtle"
+          >
             {{ mode.mode.name }}
           </UBadge>
         </div>
@@ -40,7 +45,7 @@
             class="text-green-500"
           />
         </h1>
-        <p class="text-md text-gray-500 dark:text-gray-300 mb-1">
+        <p class="text-md text-neutral-500 dark:text-neutral-300 mb-1">
           {{ game.comment }}
         </p>
         <div class="flex gap-1" v-if="game.categories">
@@ -56,8 +61,8 @@
             <UButton
               v-if="loggedIn"
               v-bind="props"
-              icon="i-heroicons-pencil-solid"
-              color="orange"
+              icon="i-lucide-pencil"
+              color="warning"
               variant="ghost"
             />
           </template>

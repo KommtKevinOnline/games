@@ -8,20 +8,27 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2024-07-07',
 
-  extends: ['@nuxt/ui-pro'],
-
   modules: [
-    '@nuxt/ui',
+    '@nuxt/ui-pro',
     '@nuxtjs/color-mode',
     'nuxt-auth-utils',
     '@nuxt/image',
     '@vueuse/nuxt',
   ],
 
-  css: ['vue-virtual-scroller/dist/vue-virtual-scroller.css'],
+  css: [
+    '~/assets/css/main.css',
+    'vue-virtual-scroller/dist/vue-virtual-scroller.css',
+  ],
 
   colorMode: {
     preference: 'dark',
+  },
+
+  routeRules: {
+    '/categories': {
+      ssr: false,
+    },
   },
 
   runtimeConfig: {

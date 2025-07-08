@@ -1,12 +1,12 @@
 <template>
-  <USelectMenu
+  <USelect
     v-model="selected"
-    :options="gameModes"
-    value-attribute="id"
-    option-attribute="name"
-    icon="i-heroicons-user-group-16-solid"
+    :items="gameModes"
+    value-key="id"
+    label-key="name"
+    icon="i-lucide-users"
     placeholder="Modus auswählen"
-    :ui="{ wrapper: 'min-w-48' }"
+    class="min-w-48"
     :multiple
   />
 </template>

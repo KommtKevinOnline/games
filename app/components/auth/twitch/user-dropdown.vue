@@ -1,16 +1,12 @@
 <template>
-  <UDropdown
-    :items="items"
-    :ui="{ item: { disabled: 'cursor-text select-text' } }"
-    :popper="{ strategy: 'absolute', placement: 'top' }"
-  >
+  <UDropdownMenu :items="items">
     <template #default="{ open }">
       <UButton
-        color="gray"
+        color="neutral"
         variant="ghost"
         class="w-full"
         :label="user?.displayName"
-        :class="[open && 'bg-gray-50 dark:bg-gray-800']"
+        :class="[open && 'bg-neutral-50 dark:bg-neutral-800']"
       >
         <template #leading>
           <UAvatar
@@ -21,20 +17,11 @@
         </template>
 
         <template #trailing>
-          <UIcon name="i-heroicons-ellipsis-vertical" class="w-5 h-5 ml-auto" />
+          <UIcon name="i-lucide-ellipsis-vertical" class="w-5 h-5 ml-auto" />
         </template>
       </UButton>
     </template>
-
-    <template #account>
-      <div class="text-left">
-        <p>Angemeldet als</p>
-        <p class="truncate font-medium text-gray-900 dark:text-white">
-          {{ user?.email }}
-        </p>
-      </div>
-    </template>
-  </UDropdown>
+  </UDropdownMenu>
 </template>
 
 <script setup lang="ts">
@@ -49,12 +36,12 @@ const items = computed(() => [
   [
     {
       label: 'Admin',
-      icon: 'i-heroicons-shield-exclamation-solid',
+      icon: 'i-lucide-shield-alert',
       to: '/admin',
     },
     {
       label: 'Abmelden',
-      icon: 'i-heroicons-arrow-left-on-rectangle',
+      icon: 'i-lucide-log-out',
       click: () => logout(),
     },
   ],

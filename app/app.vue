@@ -1,14 +1,15 @@
 <template>
   <NuxtLoadingIndicator />
 
-  <UMain>
-    <AppHeader />
+  <UApp>
+    <UMain>
+      <AppHeader />
 
-    <NuxtPage />
-  </UMain>
+      <NuxtPage />
+    </UMain>
+  </UApp>
 
   <Footer />
-  <UNotifications />
 </template>
 
 <script setup lang="ts">

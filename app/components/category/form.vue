@@ -1,35 +1,41 @@
 <template>
   <UForm
     :validate="validate"
-    :validate-on="['submit']"
+    :validate-on="['input']"
     :state="state"
     class="space-y-4"
     @submit="onSubmit"
   >
-    <UFormGroup label="Name" name="name">
-      <UInput v-model="state.name" placeholder="Olympiaden" />
-    </UFormGroup>
+    <UFormField label="Name" name="name">
+      <UInput class="w-full" v-model="state.name" placeholder="Olympiaden" />
+    </UFormField>
 
-    <UFormGroup label="Farbe" name="color">
+    <UFormField label="Farbe" name="color">
       <div class="flex items-center gap-2">
-        <UInput
-          v-model="state.color"
-          type="color"
-          :ui="{ base: 'size-7 !p-0' }"
-        />
-        <color-picker v-model="state.color" />
-        <UInput v-model="state.color" placeholder="#0000" />
+        <UPopover :content="{ side: 'bottom' }">
+          <div
+            class="size-7 rounded outline outline-neutral-200 dark:outline-neutral-700"
+            :style="{ backgroundColor: state.color }"
+          ></div>
+
+          <template #content>
+            <UCard :ui="{ body: 'p-2 sm:p-4' }">
+              <UColorPicker v-model="state.color" />
+            </UCard>
+          </template>
+        </UPopover>
+        <UInput class="w-full" v-model="state.color" placeholder="#0000" />
       </div>
-    </UFormGroup>
+    </UFormField>
 
     <div class="flex justify-end gap-3">
       <UButton
         label="Abbrechen"
-        color="gray"
+        color="neutral"
         variant="ghost"
         @click="emit('close')"
       />
-      <UButton type="submit" label="Speichern" color="green" />
+      <UButton type="submit" label="Speichern" color="success" />
     </div>
   </UForm>
 </template>
@@ -46,7 +52,7 @@ const emit = defineEmits(['close']);
 const state = reactive<{ id?: number; name?: string; color?: string }>({
   id: props.data?.id,
   name: props.data?.name,
-  color: props.data?.color ?? undefined,
+  color: props.data?.color ?? '#ff0000',
 });
 
 // https://ui.nuxt.com/components/form

@@ -3,15 +3,12 @@
     <UBadge
       v-for="category in categories"
       :key="category.id"
-      class="cursor-pointer custom-badge"
+      class="cursor-pointer custom-badge rounded-full"
       :class="[
         `category-${category.id}`,
         selectedCategories.includes(category.id) ? 'selected' : '',
       ]"
       variant="soft"
-      :ui="{
-        rounded: 'rounded-full',
-      }"
       :style="getBadgeStyle(category)"
       @click="toggleCategory(category.id)"
     >
@@ -25,7 +22,7 @@ const selectedCategories = defineModel<number[]>({
   default: () => [],
 });
 
-const { data: categories } = await useFetch('/api/categories', {
+const { data: categories } = await useFetch<Category[]>('/api/categories', {
   default: () => [],
 });
 

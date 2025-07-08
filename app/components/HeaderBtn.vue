@@ -1,9 +1,8 @@
 <template>
   <UButton
-    :ui="{ variant: { link: '!no-underline hover:text-primary' } }"
     :to
-    :variant="isActive ? 'solid' : 'link'"
-    :color="isActive ? 'primary' : 'white'"
+    :variant="isActive ? 'solid' : 'ghost'"
+    :color="isActive ? 'primary' : 'neutral'"
     :icon
   >
     <slot />

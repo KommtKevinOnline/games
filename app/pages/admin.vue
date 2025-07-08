@@ -5,16 +5,16 @@
         <template #header>
           <div class="flex justify-between">
             <h1 class="text-2xl font-bold flex items-center gap-2">
-              <UIcon name="i-heroicons-user" />
+              <UIcon name="i-lucide-user" />
               Benutzer
             </h1>
             <admin-user-modal @save="refresh">
               <template #activator="{ props }">
                 <UButton
                   v-bind="props"
-                  icon="i-heroicons-plus-circle-16-solid"
+                  icon="i-lucide-circle-plus"
                   variant="ghost"
-                  color="green"
+                  color="success"
                 />
               </template>
             </admin-user-modal>
@@ -35,16 +35,16 @@
       <UCard class="break-inside-avoid">
         <template #header>
           <h1 class="text-2xl font-bold flex items-center gap-2">
-            <UIcon name="i-heroicons-circle-stack-20-solid" />
+            <UIcon name="i-lucide-database" />
             Daten und Cache
           </h1>
         </template>
 
         <div class="flex flex-col gap-2">
           <UButton
-            icon="i-heroicons-circle-stack-20-solid"
+            icon="i-lucide-database"
             block
-            color="orange"
+            color="warning"
             :loading="loading.clearCache"
             @click="clearCache"
           >
@@ -86,8 +86,8 @@ async function remove(id: string) {
 
     toast.add({
       title: 'Benutzer erfolgreich entfernt',
-      color: 'green',
-      icon: 'i-heroicons-check-circle-16-solid',
+      color: 'success',
+      icon: 'i-lucide-circle-check',
     });
 
     refresh();
@@ -95,8 +95,8 @@ async function remove(id: string) {
     toast.add({
       title: 'Fehler beim entfernen des Benutzers',
       description: (error as Error).message,
-      color: 'red',
-      icon: 'i-heroicons-exclamation-circle-16-solid',
+      color: 'error',
+      icon: 'i-lucide-circle-x',
     });
   } finally {
     loading.removeUser = false;
@@ -117,8 +117,8 @@ async function update(id: string, data: { godMode: boolean }) {
 
     toast.add({
       title: 'Benutzer erfolgreich aktualisiert',
-      color: 'green',
-      icon: 'i-heroicons-check-circle-16-solid',
+      color: 'success',
+      icon: 'i-lucide-circle-check',
     });
 
     refresh();
@@ -126,8 +126,8 @@ async function update(id: string, data: { godMode: boolean }) {
     toast.add({
       title: 'Fehler beim aktualisieren der Benutzer',
       description: (error as Error).message,
-      color: 'red',
-      icon: 'i-heroicons-exclamation-circle-16-solid',
+      color: 'error',
+      icon: 'i-lucide-circle-x',
     });
   } finally {
     loading.updateUser = false;
@@ -143,13 +143,13 @@ async function clearCache() {
     toast.add({
       title: 'Cache geleert',
       description: 'Der Cache wurde erfolgreich geleert.',
-      color: 'green',
+      color: 'success',
     });
   } catch (error) {
     toast.add({
       title: 'Fehler beim Cache leeren',
       description: (error as Error).message,
-      color: 'red',
+      color: 'error',
     });
   } finally {
     loading.clearCache = false;
