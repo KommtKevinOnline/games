@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-07-07',
 
   modules: [
-    '@nuxt/ui-pro',
+    '@nuxt/ui',
     '@nuxtjs/color-mode',
     'nuxt-auth-utils',
     '@nuxt/image',
