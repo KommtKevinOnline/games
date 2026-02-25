@@ -1,6 +1,8 @@
 <template>
   <UContainer>
-    <div class="flex justify-between mt-8 flex-wrap">
+    <div
+      class="flex justify-between mt-8 flex-wrap sticky top-16 z-10 bg-default p-4"
+    >
       <div class="flex gap-4 items-center">
         <UInput
           v-model="filter.search"
