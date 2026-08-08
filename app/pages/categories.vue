@@ -84,9 +84,9 @@ const columns: TableColumn<Category>[] = [
             {
               class: 'text-neutral-900 dark:text-white font-medium',
             },
-            [row.original.name]
+            [row.original.name],
           ),
-        ]
+        ],
       );
     },
   },
@@ -112,8 +112,8 @@ const columns: TableColumn<Category>[] = [
               variant: 'ghost',
               class: 'ml-auto',
               'aria-label': 'Actions dropdown',
-            })
-        )
+            }),
+        ),
       );
     },
   },
@@ -148,7 +148,7 @@ const editCategory = ref<Category | undefined>(undefined);
 
 function openEdit(categoryId: number) {
   const category = categories.value.find(
-    (category) => category.id === categoryId
+    (category) => category.id === categoryId,
   );
 
   if (!category) {
