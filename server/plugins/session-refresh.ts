@@ -24,6 +24,11 @@ async function validateToken(token: string) {
 
 export default defineNitroPlugin(() => {
   sessionHooks.hook('fetch', async (session, event) => {
+    // Fires for every session read, including anonymous ones with no user yet.
+    if (!session.user?.accessToken) {
+      return;
+    }
+
     const isValid = await validateToken(session.user.accessToken);
 
     consola.debug('[Session] is valid:', isValid);
