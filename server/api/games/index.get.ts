@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { cachedGames } from '../../utils/games';
 
 function coerceToArray<Schema extends z.ZodArray<z.ZodTypeAny>>(
-  schema: Schema
+  schema: Schema,
 ) {
   return z.union([z.any().array(), z.any().transform((x) => [x])]).pipe(schema);
 }
@@ -24,14 +24,19 @@ export default defineEventHandler(async (event) => {
     released: z
       .string()
       .optional()
-      .transform((value) => value === 'true'),
+      .transform((value) => value === 'true')
+      .default(true),
   });
 
   const search = query.search.toLowerCase();
 
   const filteredGames = games
     .filter((game) => {
-      return game.released === query.released;
+      if (!query.released && game.released) {
+        return false;
+      }
+
+      return true;
     })
     .filter((game) => {
       if (!query.played && game.played) {
@@ -50,8 +55,8 @@ export default defineEventHandler(async (event) => {
 
       return query.categories.every((category) =>
         game.categories.some(
-          (gameCategory) => gameCategory.category.id === parseInt(category)
-        )
+          (gameCategory) => gameCategory.category.id === parseInt(category),
+        ),
       );
     })
     .filter((game) => {

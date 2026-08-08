@@ -27,17 +27,19 @@
 
     <template #footer>
       <div class="flex flex-col gap-1">
-        <div class="flex gap-1" v-if="game.modes">
-          <UBadge
-            color="neutral"
-            v-for="mode in game.modes"
-            size="sm"
-            variant="subtle"
-          >
-            {{ mode.mode.name }}
-          </UBadge>
-        </div>
-        <h1 class="text-2xl font-bold flex items-center gap-2">
+        <slot name="modes">
+          <div class="flex gap-1" v-if="game.modes && !clean">
+            <UBadge
+              color="neutral"
+              v-for="mode in game.modes"
+              size="sm"
+              variant="subtle"
+            >
+              {{ mode.mode.name }}
+            </UBadge>
+          </div>
+        </slot>
+        <h1 class="text-2xl font-bold flex items-center gap-2 truncate">
           {{ game.name }}
           <UIcon
             v-if="game.played"
@@ -45,28 +47,35 @@
             class="text-green-500"
           />
         </h1>
-        <p class="text-md text-neutral-500 dark:text-neutral-300 mb-1">
+        <p
+          v-if="!clean"
+          class="text-md text-neutral-500 dark:text-neutral-300 mb-1"
+        >
           {{ game.comment }}
         </p>
-        <div class="flex gap-1" v-if="game.categories">
-          <category-badge
-            v-for="category in game.categories"
-            v-bind="category.category"
-          />
-        </div>
+        <slot name="categories">
+          <div class="flex gap-1" v-if="game.categories && !clean">
+            <category-badge
+              v-for="category in game.categories"
+              v-bind="category.category"
+            />
+          </div>
+        </slot>
       </div>
       <div>
-        <game-modal :game @save="emit('refresh')">
-          <template #activator="{ props }">
-            <UButton
-              v-if="loggedIn"
-              v-bind="props"
-              icon="i-lucide-pencil"
-              color="warning"
-              variant="ghost"
-            />
-          </template>
-        </game-modal>
+        <slot name="action">
+          <game-modal :game @save="emit('refresh')">
+            <template #activator="{ props }">
+              <UButton
+                v-if="loggedIn && !readonly"
+                v-bind="props"
+                icon="i-lucide-pencil"
+                color="warning"
+                variant="ghost"
+              />
+            </template>
+          </game-modal>
+        </slot>
       </div>
     </template>
   </UCard>
@@ -77,12 +86,20 @@ import type { Category, Game, GameMode } from '~~/server/utils/drizzle';
 
 const { loggedIn } = useUserSession();
 
-const props = defineProps<{
-  game: Game & {
-    categories: { gameId: string; category: Category }[];
-    modes: { gameId: string; mode: GameMode }[];
-  };
-}>();
+const props = withDefaults(
+  defineProps<{
+    game: Game & {
+      categories: { gameId: string; category: Category }[];
+      modes: { gameId: string; mode: GameMode }[];
+    };
+    readonly?: boolean;
+    clean?: boolean;
+  }>(),
+  {
+    readonly: false,
+    clean: false,
+  },
+);
 
 const emit = defineEmits(['refresh']);
 

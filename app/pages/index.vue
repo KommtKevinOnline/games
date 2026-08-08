@@ -46,6 +46,8 @@
     <div v-if="error" class="text-red-500">
       {{ error }}
     </div>
+
+    <WelcomeBackModal v-if="loggedIn" />
   </UContainer>
 </template>
 

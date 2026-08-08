@@ -32,6 +32,8 @@ async function logout() {
   await navigateTo('/');
 }
 
+const hasSeen = useCookie<boolean>('games.hasSeen');
+
 const items = computed(() => [
   [
     {
@@ -40,9 +42,16 @@ const items = computed(() => [
       to: '/admin',
     },
     {
+      label: 'Welcome Back Screen anzeigen',
+      icon: 'i-lucide-app-window',
+      onClick: () => {
+        hasSeen.value = false;
+      },
+    },
+    {
       label: 'Abmelden',
       icon: 'i-lucide-log-out',
-      click: () => logout(),
+      onClick: () => logout(),
     },
   ],
 ]);
