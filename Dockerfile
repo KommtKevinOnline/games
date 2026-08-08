@@ -22,6 +22,9 @@ WORKDIR /app
 
 COPY --from=build /app/.output /app/.output
 
+# The db:migrate task reads these from disk at runtime, relative to /app.
+COPY --from=build /app/server/database/migrations /app/server/database/migrations
+
 EXPOSE 3000
 
 CMD ["node", ".output/server/index.mjs"]
