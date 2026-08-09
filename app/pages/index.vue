@@ -47,7 +47,7 @@
       {{ error }}
     </div>
 
-    <WelcomeBackModal v-if="loggedIn" />
+    <WelcomeBackModal />
   </UContainer>
 </template>
 
